@@ -498,7 +498,7 @@
             upgradeMessageEl.style.display = 'none';
             
             // Check if selected option is blurred
-            if (selectedOption.classList.contains('blurred-option')) {
+            if (selectedOption && selectedOption.classList.contains('blurred-option')) {
                 upgradeMessageEl.style.display = 'block';
                 topicSelectEl.value = ''; // Reset selection
             }
@@ -709,7 +709,7 @@
         }
 
         // Initialize the app
-        init();
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
