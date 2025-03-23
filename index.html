@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematics Quiz Speed Test</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6889b8;
+            --accent-color: #ffd700;
+            --correct-color: #4caf50;
+            --incorrect-color: #f44336;
+            --timer-bg: #e0e0e0;
+            --white: #ffffff;
+            --dark: #333333;
+            --gray: #808080;
+            --light-gray: #f5f5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-selection {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: var(--white);
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-start {
+            display: block;
+            width: 100%;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .quiz-container {
+            display: none;
+        }
+
+        .question-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .timer-container {
+            margin-bottom: 1rem;
+        }
+
+        .timer-bar {
+            height: 10px;
+            width: 100%;
+            background-color: var(--timer-bg);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .timer-progress {
+            height: 100%;
+            width: 100%;
+            background-color: var(--primary-color);
+            transition: width 1s linear;
+        }
+
+        .question {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .options {
+            list-style-type: none;
+        }
+
+        .option {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #e8e8e8;
+        }
+
+        .option.correct {
+            background-color: var(--correct-color);
+            color: var(--white);
+        }
+
+        .option.incorrect {
+            background-color: var(--incorrect-color);
+            color: var(--white);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .correct-feedback {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--correct-color);
+        }
+
+        .incorrect-feedback {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--incorrect-color);
+        }
+
+        .question-counter {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .restart-btn {
+            margin-top: 1rem;
+        }
+
+        .blurred-option {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .upgrade-message {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 1rem;
+            background-color: rgba(255, 215, 0, 0.2);
+            border: 1px solid var(--accent-color);
+            border-radius: 5px;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mathematics Quiz Speed Test</h1>
+            <p>Test your math skills with a timed quiz!</p>
+        </header>
+
+        <div class="topic-selection" id="topicSelection">
+            <label for="topic">Select a Topic:</label>
+            <select id="topic">
+                <option value="">-- Select a topic --</option>
+                <option value="algebra">Algebra</option>
+                <option value="geometry">Geometry</option>
+                <option value="calculus">Calculus</option>
+                <option value="statistics" class="blurred-option">Statistics</option>
+                <option value="trigonometry" class="blurred-option">Trigonometry</option>
+                <option value="number-theory" class="blurred-option">Number Theory</option>
+                <option value="discrete-math" class="blurred-option">Discrete Mathematics</option>
+            </select>
+            <button id="startBtn" class="btn btn-start">Start Quiz</button>
+            <div id="upgradeMessage" class="upgrade-message">UPGRADE TO PRO</div>
+        </div>
+
+        <div id="quizContainer" class="quiz-container">
+            <div class="question-counter" id="questionCounter">Question 1 of 10</div>
+            <div class="timer-container">
+                <div class="timer-bar">
+                    <div class="timer-progress" id="timerProgress"></div>
+                </div>
+            </div>
+            <div class="question-container">
+                <div class="question" id="question"></div>
+                <ul class="options" id="options"></ul>
+                <div class="feedback" id="feedback"></div>
+            </div>
+        </div>
+
+        <div id="results" class="results">
+            <h2>Quiz Completed!</h2>
+            <p>Your score:</p>
+            <div class="score" id="score">0/10</div>
+            <p id="timeStats"></p>
+            <button id="restartBtn" class="btn restart-btn">Take Another Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const topicSelectionEl = document.getElementById('topicSelection');
+        const topicSelectEl = document.getElementById('topic');
+        const startBtn = document.getElementById('startBtn');
+        const upgradeMessageEl = document.getElementById('upgradeMessage');
+        const quizContainerEl = document.getElementById('quizContainer');
+        const questionCounterEl = document.getElementById('questionCounter');
+        const questionEl = document.getElementById('question');
+        const optionsEl = document.getElementById('options');
+        const feedbackEl = document.getElementById('feedback');
+        const timerProgressEl = document.getElementById('timerProgress');
+        const resultsEl = document.getElementById('results');
+        const scoreEl = document.getElementById('score');
+        const timeStatsEl = document.getElementById('timeStats');
+        const restartBtn = document.getElementById('restartBtn');
+
+        // Quiz state
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer;
+        let timeLeft = 60;
+        let questions = [];
+        let startTime, endTime;
+        let answeredQuestions = 0;
+        let totalTimeUsed = 0;
+
+        // Questions bank
+        const questionsBank = {
+            algebra: [
+                {
+                    question: "Solve for x: 2x + 5 = 13",
+                    options: ["x = 4", "x = 5", "x = 3", "x = 6"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Simplify: 3(x - 2) - 2(x + 1)",
+                    options: ["x - 8", "x - 4", "5x - 8", "x - 6"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Factor: x² - 9",
+                    options: ["(x+3)(x-3)", "(x-3)²", "(x+3)²", "(x+9)(x-1)"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Solve: 4x - 2 > 10",
+                    options: ["x > 3", "x < 3", "x > 2", "x < 2"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "If f(x) = 2x² + 3x - 1, find f(2)",
+                    options: ["13", "11", "15", "9"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Solve the system: x + y = 5, 2x - y = 4",
+                    options: ["x = 3, y = 2", "x = 2, y = 3", "x = 4, y = 1", "x = 1, y = 4"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Which is the quadratic formula?",
+                    options: ["x = (-b ± √(b² - 4ac)) / 2a", "x = -b/a", "x = -c/b", "x = (a ± √(b² - 4ac)) / 2a"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Simplify: (3x² - 2x + 1) - (x² + 2x - 3)",
+                    options: ["2x² - 4x + 4", "4x² - 4x - 2", "2x² - 4x - 4", "4x² + 0x + 4"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Solve: |2x - 4| = 6",
+                    options: ["x = -1 or x = 5", "x = 1 or x = 5", "x = -1 or x = -5", "x = 1 or x = -5"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "If y varies directly with x, and y = 15 when x = 3, find y when x = 7",
+                    options: ["y = 35", "y = 21", "y = 28", "y = 45"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Expand: (x + 2)³",
+                    options: ["x³ + 6x² + 12x + 8", "x³ + 6x² + 12x + 6", "x³ + 6x² + 6x + 8", "x³ + 3x² + 3x + 1"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Solve for x: log₂(x) = 3",
+                    options: ["x = 8", "x = 6", "x = 9", "x = 16"],
+                    correctAnswer: 0
+                }
+            ],
+            geometry: [
+                {
+                    question: "What is the formula for the area of a circle?",
+                    options: ["πr²", "2πr", "πd", "2πd"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "In a right triangle, if one angle is 30°, what is another angle?",
+                    options: ["60°", "45°", "30°", "90°"],
+                    correctAnswer: 3
+                },
+                {
+                    question: "What is the sum of interior angles of a pentagon?",
+                    options: ["540°", "360°", "720°", "180°"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "The Pythagorean theorem relates to which type of triangle?",
+                    options: ["Right triangle", "Equilateral triangle", "Isosceles triangle", "Scalene triangle"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the volume of a cube with side length 3?",
+                    options: ["27", "9", "6", "18"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Two angles that sum to 90° are called:",
+                    options: ["Complementary angles", "Supplementary angles", "Vertical angles", "Adjacent angles"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the area of a triangle with base 8 and height 5?",
+                    options: ["20", "40", "13", "10"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "If a rectangle has length 12 and width 5, what is its perimeter?",
+                    options: ["34", "17", "60", "24"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the formula for the circumference of a circle?",
+                    options: ["2πr", "πr²", "πd/2", "2πd"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "In similar triangles, corresponding sides are:",
+                    options: ["Proportional", "Equal", "Perpendicular", "Parallel"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the measure of each interior angle in a regular hexagon?",
+                    options: ["120°", "60°", "108°", "135°"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the surface area of a sphere with radius r?",
+                    options: ["4πr²", "πr²", "4/3πr³", "2πr"],
+                    correctAnswer: 0
+                }
+            ],
+            calculus: [
+                {
+                    question: "What is the derivative of f(x) = x²?",
+                    options: ["f'(x) = 2x", "f'(x) = x", "f'(x) = 2", "f'(x) = x²"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the integral of f(x) = 2x?",
+                    options: ["F(x) = x² + C", "F(x) = 2x² + C", "F(x) = x + C", "F(x) = 2 ln|x| + C"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the derivative of f(x) = sin(x)?",
+                    options: ["f'(x) = cos(x)", "f'(x) = -sin(x)", "f'(x) = -cos(x)", "f'(x) = tan(x)"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the chain rule used for?",
+                    options: ["Finding derivatives of composite functions", "Finding integrals", "Finding limits", "Solving differential equations"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the derivative of f(x) = e^x?",
+                    options: ["f'(x) = e^x", "f'(x) = xe^x", "f'(x) = e^(x-1)", "f'(x) = 1/x"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the integral of f(x) = 1/x?",
+                    options: ["F(x) = ln|x| + C", "F(x) = x ln|x| + C", "F(x) = 1/ln|x| + C", "F(x) = e^x + C"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "If f'(x) = 6x, then f(x) could be:",
+                    options: ["f(x) = 3x² + C", "f(x) = 6 ln|x| + C", "f(x) = 6x + C", "f(x) = x^6/6 + C"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the limit as x approaches 0 of sin(x)/x?",
+                    options: ["1", "0", "∞", "Does not exist"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "The second derivative represents:",
+                    options: ["Rate of change of the rate of change", "Position", "Velocity", "Area under curve"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the derivative of f(x) = ln(x)?",
+                    options: ["f'(x) = 1/x", "f'(x) = ln(x)", "f'(x) = x", "f'(x) = e^x"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What does the Fundamental Theorem of Calculus connect?",
+                    options: ["Differentiation and integration", "Limits and continuity", "Series and sequences", "Functions and their inverses"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What is the derivative of a constant function f(x) = C?",
+                    options: ["f'(x) = 0", "f'(x) = 1", "f'(x) = C", "f'(x) = -C"],
+                    correctAnswer: 0
+                }
+            ]
+        };
+
+        // Initialize the quiz
+        function init() {
+            // Event listeners
+            startBtn.addEventListener('click', startQuiz);
+            restartBtn.addEventListener('click', restartQuiz);
+            topicSelectEl.addEventListener('change', handleTopicChange);
+            
+            // Disable blurred options
+            const blurredOptions = document.querySelectorAll('.blurred-option');
+            blurredOptions.forEach(option => {
+                option.disabled = true;
+            });
+        }
+
+        // Handle topic change
+        function handleTopicChange() {
+            const selectedTopic = topicSelectEl.value;
+            const selectedOption = topicSelectEl.options[topicSelectEl.selectedIndex];
+            
+            // Reset upgrade message
+            upgradeMessageEl.style.display = 'none';
+            
+            // Check if selected option is blurred
+            if (selectedOption.classList.contains('blurred-option')) {
+                upgradeMessageEl.style.display = 'block';
+                topicSelectEl.value = ''; // Reset selection
+            }
+        }
+
+        // Start the quiz
+        function startQuiz() {
+            const selectedTopic = topicSelectEl.value;
+            
+            if (!selectedTopic) {
+                alert('Please select a topic first!');
+                return;
+            }
+            
+            // Load questions for selected topic
+            questions = getRandomQuestions(selectedTopic, 10);
+            
+            if (questions.length === 0) {
+                alert('No questions available for this topic!');
+                return;
+            }
+            
+            // Hide topic selection and show quiz
+            topicSelectionEl.style.display = 'none';
+            quizContainerEl.style.display = 'block';
+            
+            // Reset quiz state
+            currentQuestionIndex = 0;
+            score = 0;
+            answeredQuestions = 0;
+            totalTimeUsed = 0;
+            startTime = new Date();
+            
+            // Load first question
+            loadQuestion();
+        }
+
+        // Get random questions from the bank
+        function getRandomQuestions(topic, count) {
+            if (!questionsBank[topic] || questionsBank[topic].length === 0) {
+                return [];
+            }
+            
+            const topicQuestions = [...questionsBank[topic]];
+            const selectedQuestions = [];
+            
+            // Ensure we don't try to get more questions than are available
+            count = Math.min(count, topicQuestions.length);
+            
+            for (let i = 0; i < count; i++) {
+                const randomIndex = Math.floor(Math.random() * topicQuestions.length);
+                selectedQuestions.push(topicQuestions.splice(randomIndex, 1)[0]);
+            }
+            
+            return selectedQuestions;
+        }
+
+        // Load a question
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                endQuiz();
+                return;
+            }
+            
+            const question = questions[currentQuestionIndex];
+            
+            // Update question counter
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            
+            // Load question text
+            questionEl.textContent = question.question;
+            
+            // Clear options and feedback
+            optionsEl.innerHTML = '';
+            feedbackEl.innerHTML = '';
+            feedbackEl.className = 'feedback';
+            
+            // Add options
+            question.options.forEach((option, index) => {
+                const li = document.createElement('li');
+                li.textContent = option;
+                li.className = 'option';
+                li.setAttribute('data-index', index);
+                li.addEventListener('click', () => selectAnswer(index));
+                optionsEl.appendChild(li);
+            });
+            
+            // Reset and start timer
+            timeLeft = 60;
+            timerProgressEl.style.width = '100%';
+            clearInterval(timer);
+            startTimer();
+        }
+
+        // Start the timer
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                
+                // Update timer bar
+                const percentage = (timeLeft / 60) * 100;
+                timerProgressEl.style.width = `${percentage}%`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    handleTimeUp();
+                }
+            }, 1000);
+        }
+
+        // Handle time up
+        function handleTimeUp() {
+            // Mark question as timed out
+            feedbackEl.textContent = 'Time's up! Moving to next question...';
+            feedbackEl.className = 'feedback incorrect-feedback';
+            
+            // Disable all options
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                
+                // Highlight correct answer
+                const correctIndex = questions[currentQuestionIndex].correctAnswer;
+                if (parseInt(option.getAttribute('data-index')) === correctIndex) {
+                    option.classList.add('correct');
+                }
+            });
+            
+            // Record time used
+            totalTimeUsed += 60;
+            answeredQuestions++;
+            
+            // Move to next question after 2 seconds
+            setTimeout(nextQuestion, 2000);
+        }
+
+        // Select an answer
+        function selectAnswer(index) {
+            clearInterval(timer);
+            
+            const correctIndex = questions[currentQuestionIndex].correctAnswer;
+            const isCorrect = index === correctIndex;
+            
+            // Record time used
+            const timeUsed = 60 - timeLeft;
+            totalTimeUsed += timeUsed;
+            answeredQuestions++;
+            
+            // Update score if correct
+            if (isCorrect) {
+                score++;
+            }
+            
+            // Show feedback
+            feedbackEl.textContent = isCorrect ? 'Correct!' : 'Incorrect!';
+            feedbackEl.className = isCorrect ? 'feedback correct-feedback' : 'feedback incorrect-feedback';
+            
+            // Highlight selected option and correct option
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                
+                const optionIndex = parseInt(option.getAttribute('data-index'));
+                if (optionIndex === index) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (optionIndex === correctIndex) {
+                    option.classList.add('correct');
+                }
+            });
+            
+            // Move to next question after 2 seconds
+            setTimeout(nextQuestion, 2000);
+        }
+
+        // Move to next question
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        // End the quiz
+        function endQuiz() {
+            endTime = new Date();
+            const totalTime = (endTime - startTime) / 1000; // in seconds
+            
+            // Hide quiz container and show results
+            quizContainerEl.style.display = 'none';
+            resultsEl.style.display = 'block';
+            
+            // Update score
+            scoreEl.textContent = `${score}/${questions.length}`;
+            
+            // Calculate and display time stats
+            const avgTimePerQuestion = answeredQuestions > 0 ? (totalTimeUsed / answeredQuestions).toFixed(1) : 0;
+            timeStatsEl.textContent = `Total time: ${totalTime.toFixed(1)} seconds
+                                      Average time per question: ${avgTimePerQuestion} seconds`;
+        }
+
+        // Restart the quiz
+        function restartQuiz() {
+            // Hide results and show topic selection
+            resultsEl.style.display = 'none';
+            topicSelectionEl.style.display = 'block';
+            
+            // Reset topic selection
+            topicSelectEl.value = '';
+            upgradeMessageEl.style.display = 'none';
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
