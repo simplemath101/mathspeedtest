@@ -612,7 +612,7 @@
         // Handle time up
         function handleTimeUp() {
             // Mark question as timed out
-            feedbackEl.textContent = 'Time's up! Moving to next question...';
+            feedbackEl.textContent = "Time's up! Moving to next question...";
             feedbackEl.className = 'feedback incorrect-feedback';
             
             // Disable all options
@@ -636,67 +636,41 @@
         }
 
         function selectAnswer(index) {
-    clearInterval(timer);
-    
-    const correctIndex = questions[currentQuestionIndex].correctAnswer;
-    const isCorrect = index === correctIndex;
-    
-    // Record time used
-    const timeUsed = 60 - timeLeft;
-    totalTimeUsed += timeUsed;
-    answeredQuestions++;
-    
-    // Update score if correct
-    if (isCorrect) {
-        score++;
-    }
-    
-    // Show feedback
-    feedbackEl.textContent = isCorrect ? 'Correct!' : 'Incorrect!';
-    feedbackEl.className = isCorrect ? 'feedback correct-feedback' : 'feedback incorrect-feedback';
-    
-    // Highlight selected option and correct option
-    const options = document.querySelectorAll('.option');
-    options.forEach(option => {
-        option.style.pointerEvents = 'none';
-        
-        const optionIndex = parseInt(option.getAttribute('data-index'));
-        if (optionIndex === index) {
-            option.classList.add(isCorrect ? 'correct' : 'incorrect');
-        } else if (optionIndex === correctIndex) {
-            option.classList.add('correct');
+            clearInterval(timer);
+            
+            const correctIndex = questions[currentQuestionIndex].correctAnswer;
+            const isCorrect = index === correctIndex;
+            
+            // Record time used
+            const timeUsed = 60 - timeLeft;
+            totalTimeUsed += timeUsed;
+            answeredQuestions++;
+            
+            // Update score if correct
+            if (isCorrect) {
+                score++;
+            }
+            
+            // Show feedback
+            feedbackEl.textContent = isCorrect ? 'Correct!' : 'Incorrect!';
+            feedbackEl.className = isCorrect ? 'feedback correct-feedback' : 'feedback incorrect-feedback';
+            
+            // Highlight selected option and correct option
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                
+                const optionIndex = parseInt(option.getAttribute('data-index'));
+                if (optionIndex === index) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (optionIndex === correctIndex) {
+                    option.classList.add('correct');
+                }
+            });
+            
+            // Move to next question after 2 seconds
+            setTimeout(nextQuestion, 2000);
         }
-    });
-    
-    // Move to next question after 2 seconds
-    setTimeout(nextQuestion, 2000);
-}
-
-// Similarly, update the handleTimeUp function:
-function handleTimeUp() {
-    // Mark question as timed out
-    feedbackEl.textContent = 'Time's up! Moving to next question...';
-    feedbackEl.className = 'feedback incorrect-feedback';
-    
-    // Disable all options
-    const options = document.querySelectorAll('.option');
-    options.forEach(option => {
-        option.style.pointerEvents = 'none';
-        
-        // Highlight correct answer
-        const correctIndex = questions[currentQuestionIndex].correctAnswer;
-        if (parseInt(option.getAttribute('data-index')) === correctIndex) {
-            option.classList.add('correct');
-        }
-    });
-    
-    // Record time used
-    totalTimeUsed += 60;
-    answeredQuestions++;
-    
-    // Move to next question after 2 seconds
-    setTimeout(nextQuestion, 2000);
-}
 
         // Move to next question
         function nextQuestion() {
