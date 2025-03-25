@@ -3920,12 +3920,12 @@
             // Populate lists
             userAnswers.forEach(answer => {
                 const li = document.createElement('li');
-                li.textContent = `Q: ${answer.question} | Your Answer: ${answer.userAnswer} | Correct Answer: ${answer.correctAnswer}`;
-                
                 if (answer.isCorrect) {
+                    li.textContent = `Q: ${answer.question} | Your Answer: ${answer.userAnswer}`;
                     correctList.appendChild(li);
                     correctCountNum++;
                 } else {
+                    li.textContent = `Q: ${answer.question} | Your Answer: ${answer.userAnswer} | Correct Answer: ${answer.correctAnswer}`;
                     wrongList.appendChild(li);
                     wrongCountNum++;
                 }
