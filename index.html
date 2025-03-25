@@ -3781,6 +3781,15 @@
             totalTimeUsed += 60;
             answeredQuestions++;
             
+            // Store answer with correct answer for timed out questions
+            const question = questions[currentQuestionIndex];
+            userAnswers.push({
+                question: question.question,
+                userAnswer: "Time's up",
+                correctAnswer: question.options[question.correctAnswer],
+                isCorrect: false
+            });
+            
             // Move to next question after 2 seconds
             setTimeout(nextQuestion, 2000);
         }
@@ -3796,7 +3805,7 @@
             totalTimeUsed += timeUsed;
             answeredQuestions++;
             
-            // Store answer without showing if it's correct
+            // Store answer with correct answer
             const question = questions[currentQuestionIndex];
             userAnswers.push({
                 question: question.question,
