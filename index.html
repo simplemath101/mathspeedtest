@@ -3767,11 +3767,13 @@
             
             // Disable all options
             const options = document.querySelectorAll('.option');
+            const question = questions[currentQuestionIndex];
+            const correctIndex = question.correctAnswer ?? question.answer;
+            
             options.forEach(option => {
                 option.style.pointerEvents = 'none';
                 
                 // Highlight correct answer
-                const correctIndex = questions[currentQuestionIndex].correctAnswer;
                 if (parseInt(option.getAttribute('data-index')) === correctIndex) {
                     option.classList.add('correct');
                 }
@@ -3782,11 +3784,10 @@
             answeredQuestions++;
             
             // Store answer with correct answer for timed out questions
-            const question = questions[currentQuestionIndex];
             userAnswers.push({
                 question: question.question,
                 userAnswer: "Time's up",
-                correctAnswer: question.options[question.correctAnswer],
+                correctAnswer: question.options[correctIndex],
                 isCorrect: false
             });
             
@@ -3797,7 +3798,7 @@
         function selectAnswer(index) {
             clearInterval(timer);
             
-            const correctIndex = questions[currentQuestionIndex].correctAnswer;
+            const correctIndex = questions[currentQuestionIndex].correctAnswer ?? questions[currentQuestionIndex].answer;
             const isCorrect = index === correctIndex;
             
             // Record time used
