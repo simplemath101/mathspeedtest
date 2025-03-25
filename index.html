@@ -210,6 +210,168 @@
             font-weight: bold;
             color: #ff8c00;
         }
+
+        /* Add styles for popup ad */
+        .popup-ad {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            text-align: center;
+            z-index: 9999;
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        .popup-ad h3 {
+            color: white;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .popup-ad p {
+            color: white;
+            font-size: 18px;
+            margin: 15px 0;
+        }
+
+        .popup-ad .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #ff9800;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 18px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .popup-ad .countdown {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #ffc107;
+            font-size: 16px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .popup-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Add styles for share functionality */
+        .share-container {
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .share-progress {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .share-progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: #4CAF50;
+            transition: width 0.5s ease;
+        }
+
+        .telegram-share-btn {
+            background-color: #2eaade;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: background-color 0.3s;
+        }
+
+        .telegram-share-btn:hover {
+            background-color: #239ac4;
+        }
+
+        .telegram-share-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .share-instructions {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        /* Add styles for answers summary */
+        .answers-section {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        #correct-answers {
+            background-color: #e8f5e9;
+        }
+
+        #wrong-answers {
+            background-color: #ffebee;
+        }
+
+        .answers-section h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .answers-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .answers-section li {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            background-color: white;
+        }
     </style>
 </head>
 <body>
@@ -252,11 +414,58 @@
         <div id="results" class="results">
             <h2>Quiz Completed!</h2>
             <p>Your score:</p>
-            <div class="score" id="score">0/10</div>
+            <div class="score" id="score">**</div>
+            
+            <div class="share-container">
+                <h3>Share and Unlock Full Score!</h3>
+                <p class="share-instructions">Share the quiz with friends to reveal your complete results!</p>
+                
+                <div class="share-progress">
+                    <div class="share-progress-bar" id="share-progress-bar"></div>
+                </div>
+                
+                <p id="share-count-text">Shares: 0/5</p>
+                
+                <button id="telegram-share-btn" class="telegram-share-btn">
+                    Share on Telegram
+                </button>
+                
+                <button id="reveal-score-btn" class="btn" disabled>
+                    Reveal Full Score
+                </button>
+            </div>
+            
+            <div id="answers-summary" style="display: none;">
+                <h3>Your Answers Summary</h3>
+                <div id="correct-answers" class="answers-section">
+                    <h4>Correct Answers: <span id="correct-count">0</span></h4>
+                    <ul id="correct-list"></ul>
+                </div>
+                <div id="wrong-answers" class="answers-section">
+                    <h4>Incorrect Answers: <span id="wrong-count">0</span></h4>
+                    <ul id="wrong-list"></ul>
+                </div>
+            </div>
+            
             <p id="timeStats"></p>
-            <button id="restartBtn" class="btn restart-btn">Take Another Quiz</button>
+            <button id="restartBtn" class="btn restart-btn" style="display: none;">Take Another Quiz</button>
         </div>
     </div>
+
+    <!-- Add popup ad HTML -->
+    <a id="popupAd" class="popup-ad" href="https://yourquizsite.com/pro" target="_blank">
+        <button class="close-button" onclick="closePopup(event)">✕</button>
+        <div class="popup-content">
+            <h3>🚀 Upgrade to Quiz Pro!</h3>
+            <img class="popup-image" src="https://yourquizsite.com/pro-image.jpg" alt="Quiz Pro">
+            <p><strong>Unlock More Features:</strong> Get access to premium quizzes, advanced analytics, and exclusive rewards!</p>
+            <p>Join the Pro Version now and take your learning to the next level! 🚀</p>    
+            <div class="cta-button">
+                CLICK HERE TO UPGRADE
+            </div>
+            <p id="countdown" class="countdown">Closing in 5s</p>
+        </div>
+    </a>
 
     <script>
         // DOM elements
@@ -284,6 +493,16 @@
         let startTime, endTime;
         let answeredQuestions = 0;
         let totalTimeUsed = 0;
+        let userAnswers = [];
+        let quizScore = 0;
+        let shareCount = 0;
+
+        // Additional DOM elements for new functionality
+        const telegramShareBtn = document.getElementById('telegram-share-btn');
+        const revealScoreBtn = document.getElementById('reveal-score-btn');
+        const shareProgressBar = document.getElementById('share-progress-bar');
+        const shareCountText = document.getElementById('share-count-text');
+        const answersSummary = document.getElementById('answers-summary');
 
         // Questions bank
         const questionsBank = {
@@ -487,6 +706,18 @@
             blurredOptions.forEach(option => {
                 option.disabled = true;
             });
+            
+            // Add event listeners for share functionality
+            if (telegramShareBtn && revealScoreBtn) {
+                telegramShareBtn.addEventListener('click', handleShare);
+                revealScoreBtn.addEventListener('click', revealFullScore);
+            }
+            
+            // Add popup event listeners
+            document.querySelector('.close-button').addEventListener('click', closePopup);
+            
+            // Show pop-up every 55 seconds
+            setInterval(showPopup, 55000);
         }
 
         // Handle topic change
@@ -646,30 +877,28 @@
             totalTimeUsed += timeUsed;
             answeredQuestions++;
             
+            // Store answer without showing if it's correct
+            const question = questions[currentQuestionIndex];
+            userAnswers.push({
+                question: question.question,
+                userAnswer: question.options[index],
+                correctAnswer: question.options[correctIndex],
+                isCorrect: isCorrect
+            });
+            
             // Update score if correct
             if (isCorrect) {
                 score++;
             }
             
-            // Show feedback
-            feedbackEl.textContent = isCorrect ? 'Correct!' : 'Incorrect!';
-            feedbackEl.className = isCorrect ? 'feedback correct-feedback' : 'feedback incorrect-feedback';
-            
-            // Highlight selected option and correct option
+            // Disable options without highlighting
             const options = document.querySelectorAll('.option');
             options.forEach(option => {
                 option.style.pointerEvents = 'none';
-                
-                const optionIndex = parseInt(option.getAttribute('data-index'));
-                if (optionIndex === index) {
-                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
-                } else if (optionIndex === correctIndex) {
-                    option.classList.add('correct');
-                }
             });
             
-            // Move to next question after 2 seconds
-            setTimeout(nextQuestion, 2000);
+            // Move to next question after 1 second
+            setTimeout(nextQuestion, 1000);
         }
 
         // Move to next question
@@ -687,10 +916,20 @@
             quizContainerEl.style.display = 'none';
             resultsEl.style.display = 'block';
             
-            // Update score
-            scoreEl.textContent = `${score}/${questions.length}`;
+            // Store actual score and show masked version
+            quizScore = score;
+            scoreEl.textContent = '**';
             
-            // Calculate and display time stats
+            // Reset share functionality
+            shareCount = 0;
+            shareProgressBar.style.width = '0%';
+            shareCountText.textContent = 'Shares: 0/5';
+            revealScoreBtn.disabled = true;
+            telegramShareBtn.disabled = false;
+            answersSummary.style.display = 'none';
+            restartBtn.style.display = 'none';
+            
+            // Update time stats
             const avgTimePerQuestion = answeredQuestions > 0 ? (totalTimeUsed / answeredQuestions).toFixed(1) : 0;
             timeStatsEl.textContent = `Total time: ${totalTime.toFixed(1)} seconds
                                       Average time per question: ${avgTimePerQuestion} seconds`;
@@ -705,6 +944,98 @@
             // Reset topic selection
             topicSelectEl.value = '';
             upgradeMessageEl.style.display = 'none';
+        }
+
+        // Function to handle share action
+        function handleShare() {
+            // Increment share count
+            shareCount++;
+
+            // Update progress bar and text
+            const progressPercentage = (shareCount / 5) * 100;
+            shareProgressBar.style.width = `${progressPercentage}%`;
+            shareCountText.textContent = `Shares: ${shareCount}/5`;
+
+            // Open Telegram share link
+            const telegramShareMessage = encodeURIComponent(
+                "➗✨ 99% of people can't get a perfect score on this Math quiz! " +
+                "Think you're in the top 1%? Test your knowledge now and challenge a friend to beat you! 🚀🔥\n\n" +
+                "CLICK THE LINK FOR THE QUIZ 👇 [https://yourquizlink.com]"
+            );
+            window.open(`https://t.me/share/url?url=${telegramShareMessage}`, '_blank');
+
+            // Enable reveal score button if shares reach 5
+            if (shareCount >= 5) {
+                revealScoreBtn.disabled = false;
+                telegramShareBtn.disabled = true;
+            }
+        }
+
+        // Function to reveal full score
+        function revealFullScore() {
+            scoreEl.textContent = `${quizScore}/${questions.length}`;
+            
+            // Show answers summary
+            const correctList = document.getElementById('correct-list');
+            const wrongList = document.getElementById('wrong-list');
+            const correctCount = document.getElementById('correct-count');
+            const wrongCount = document.getElementById('wrong-count');
+            
+            // Clear previous lists
+            correctList.innerHTML = '';
+            wrongList.innerHTML = '';
+            
+            // Count correct and wrong answers
+            let correctCountNum = 0;
+            let wrongCountNum = 0;
+            
+            // Populate lists
+            userAnswers.forEach(answer => {
+                const li = document.createElement('li');
+                li.textContent = `Q: ${answer.question} | Your Answer: ${answer.userAnswer} | Correct Answer: ${answer.correctAnswer}`;
+                
+                if (answer.isCorrect) {
+                    correctList.appendChild(li);
+                    correctCountNum++;
+                } else {
+                    wrongList.appendChild(li);
+                    wrongCountNum++;
+                }
+            });
+            
+            // Update counts
+            correctCount.textContent = correctCountNum;
+            wrongCount.textContent = wrongCountNum;
+            
+            // Show summary and restart button
+            answersSummary.style.display = 'block';
+            restartBtn.style.display = 'inline-block';
+            
+            alert(`Congratulations! Your full score is ${quizScore}/${questions.length}. Great job completing the mathematics quiz!`);
+            revealScoreBtn.disabled = true;
+        }
+
+        // Add popup functionality
+        function showPopup() {
+            let popup = document.getElementById("popupAd");
+            let countdown = document.getElementById("countdown");
+            let timeLeft = 35;
+            popup.style.display = "flex";
+            
+            let timer = setInterval(() => {
+                timeLeft--;
+                countdown.innerText = `Closing in ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    popup.style.display = "none";
+                }
+            }, 1000);
+        }
+
+        function closePopup(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById("popupAd").style.display = "none";
         }
 
         // Initialize the app
