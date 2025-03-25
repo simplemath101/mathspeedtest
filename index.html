@@ -1877,7 +1877,7 @@
         },
         {
             question: "Which theorem states that the sum of the squares of the two shorter sides of a right triangle equals the square of the hypotenuse?",
-            options: ["Thales' Theorem", "Pythagorean Theorem", "Midpoint Theorem", "Ceva’s Theorem"],
+            options: ["Thales' Theorem", "Pythagorean Theorem", "Midpoint Theorem", "Ceva's Theorem"],
             answer: 1
         },
         {
@@ -3617,6 +3617,12 @@
             const blurredOptions = document.querySelectorAll('.blurred-option');
             blurredOptions.forEach(option => {
                 option.disabled = true;
+                option.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    upgradeMessageEl.textContent = 'Upgrade to Pro to unlock';
+                    upgradeMessageEl.style.display = 'block';
+                    topicSelectEl.value = '';
+                });
             });
             
             // Add event listeners for share functionality
