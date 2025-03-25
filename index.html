@@ -504,6 +504,7 @@
         const shareCountText = document.getElementById('share-count-text');
         const answersSummary = document.getElementById('answers-summary');
 
+
         // Questions bank
         const questionsBank = {
             algebra: [
@@ -3604,6 +3605,7 @@
             ]
         };
 
+
         // Initialize the quiz
         function init() {
             // Event listeners
@@ -3640,6 +3642,7 @@
             
             // Check if selected option is blurred
             if (selectedOption && selectedOption.classList.contains('blurred-option')) {
+                upgradeMessageEl.textContent = 'Upgrade to Pro to unlock';
                 upgradeMessageEl.style.display = 'block';
                 topicSelectEl.value = ''; // Reset selection
             }
