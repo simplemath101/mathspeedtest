@@ -171,34 +171,35 @@
             transform: scale(1.2);
         }
 
+        /* Answer highlighting styles */
         .option.correct {
-            background: #c6f6d5 !important;
-            border-color: #38a169 !important;
+            background: #c6f6d5;
+            border-color: #38a169;
             color: #22543d;
         }
 
-        .option.incorrect {
-            background: #fed7d7 !important;
-            border-color: #e53e3e !important;
+        .option.wrong {
+            background: #fed7d7;
+            border-color: #e53e3e;
             color: #c53030;
         }
 
         .option.user-selected {
-            font-weight: 600;
-        }
-
-        .answer-indicator {
-            margin-left: auto;
             font-weight: bold;
-            font-size: 1.1rem;
         }
 
-        .correct .answer-indicator {
+        .option.correct::after {
+            content: " ✓";
             color: #38a169;
+            font-weight: bold;
+            margin-left: auto;
         }
 
-        .incorrect .answer-indicator {
+        .option.wrong::after {
+            content: " ✗";
             color: #e53e3e;
+            font-weight: bold;
+            margin-left: auto;
         }
 
         .score-display {
@@ -235,6 +236,22 @@
             border-radius: 4px;
             transition: width 0.3s ease;
             width: 0%;
+        }
+
+        .review-section {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .review-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4c51bf;
+            margin-bottom: 15px;
+            text-align: center;
         }
 
         @keyframes fadeInDown {
@@ -362,7 +379,7 @@
                     <label for="videoUrl">YouTube Video URL:</label>
                     <input type="text" id="videoUrl" class="video-input" 
                            placeholder="Paste YouTube video URL here...">
-                    <button class="load-btn" id="loadVideoBtn">Load Video</button>
+                    <button class="load-btn" onclick="loadVideo()">Load Video</button>
                 </div>
 
                 <div class="video-input-group">
@@ -376,8 +393,8 @@
                         <option value="statistics">Statistics</option>
                         <option value="arithmetic">Arithmetic</option>
                         <option value="probability">Probability</option>
-                        <option value="number_theory">Number Theory</option>
-                        <option value="linear_algebra">Linear Algebra</option>
+                        <option value="numbertheory">Number Theory</option>
+                        <option value="linearalgebra">Linear Algebra</option>
                     </select>
                 </div>
 
@@ -397,7 +414,7 @@
 
                 <div id="quizStart">
                     <p>Select a topic and click the button below to start your practice quiz!</p>
-                    <button class="start-quiz-btn" id="startQuizBtn">Start Practice Quiz</button>
+                    <button class="start-quiz-btn" onclick="startQuiz()">Start Practice Quiz</button>
                 </div>
 
                 <div id="quizContainer" class="quiz-container">
@@ -409,9 +426,9 @@
                         <!-- Questions will be generated here -->
                     </div>
                     
-                    <button class="submit-btn" id="submitQuizBtn" style="display: none;">Submit Quiz</button>
+                    <button class="submit-btn" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
                     <div id="scoreDisplay"></div>
-                    <button class="restart-btn" id="restartQuizBtn" style="display: none;">Take Another Quiz</button>
+                    <button class="restart-btn" onclick="restartQuiz()" style="display: none;">Take Another Quiz</button>
                 </div>
             </div>
         </div>
@@ -440,89 +457,7 @@
                     question: "If f(x) = 2x + 1, what is f(3)?",
                     options: ["5", "6", "7", "8"],
                     correct: 2
-                }
-            ],
-            probability: [
-                {
-                    question: "What is the probability of rolling a 6 on a fair die?",
-                    options: ["1/6", "1/3", "1/2", "2/3"],
-                    correct: 0
                 },
-                {
-                    question: "If P(A) = 0.3 and P(B) = 0.4, and A and B are independent, what is P(A and B)?",
-                    options: ["0.12", "0.7", "0.1", "0.24"],
-                    correct: 0
-                },
-                {
-                    question: "In a deck of 52 cards, what's the probability of drawing a heart?",
-                    options: ["1/4", "1/13", "1/52", "1/2"],
-                    correct: 0
-                },
-                {
-                    question: "What is the probability of getting at least one head in two coin flips?",
-                    options: ["1/2", "2/3", "3/4", "1/4"],
-                    correct: 2
-                },
-                {
-                    question: "If you draw 2 cards from a deck without replacement, what's P(both are aces)?",
-                    options: ["4/663", "1/169", "1/221", "2/169"],
-                    correct: 2
-                }
-            ],
-            number_theory: [
-                {
-                    question: "What is the greatest common divisor (GCD) of 48 and 18?",
-                    options: ["6", "8", "12", "3"],
-                    correct: 0
-                },
-                {
-                    question: "Which number is prime?",
-                    options: ["21", "27", "29", "33"],
-                    correct: 2
-                },
-                {
-                    question: "What is 17 mod 5?",
-                    options: ["2", "3", "4", "1"],
-                    correct: 0
-                },
-                {
-                    question: "The least common multiple (LCM) of 6 and 8 is:",
-                    options: ["14", "24", "48", "16"],
-                    correct: 1
-                },
-                {
-                    question: "How many divisors does 12 have?",
-                    options: ["4", "5", "6", "8"],
-                    correct: 2
-                }
-            ],
-            linear_algebra: [
-                {
-                    question: "What is the determinant of the 2×2 matrix [[2,3],[1,4]]?",
-                    options: ["5", "8", "11", "14"],
-                    correct: 0
-                },
-                {
-                    question: "Two vectors are orthogonal if their dot product is:",
-                    options: ["1", "0", "-1", "∞"],
-                    correct: 1
-                },
-                {
-                    question: "The identity matrix I₂ is:",
-                    options: ["[[1,0],[0,1]]", "[[0,1],[1,0]]", "[[1,1],[1,1]]", "[[2,0],[0,2]]"],
-                    correct: 0
-                },
-                {
-                    question: "What is the rank of a 3×3 zero matrix?",
-                    options: ["3", "2", "1", "0"],
-                    correct: 3
-                },
-                {
-                    question: "If A is a 2×3 matrix and B is a 3×4 matrix, what size is AB?",
-                    options: ["2×4", "3×3", "2×3", "Cannot multiply"],
-                    correct: 0
-                }
-            ],
                 {
                     question: "Solve: 3x - 7 = 2x + 5",
                     options: ["x = 10", "x = 12", "x = 8", "x = 6"],
@@ -663,6 +598,87 @@
                     options: ["6", "7", "8", "9"],
                     correct: 2
                 }
+            ],
+            probability: [
+                {
+                    question: "What is the probability of rolling a 6 on a fair six-sided die?",
+                    options: ["1/6", "1/3", "1/2", "2/3"],
+                    correct: 0
+                },
+                {
+                    question: "If P(A) = 0.3 and P(B) = 0.4, and A and B are independent, what is P(A and B)?",
+                    options: ["0.7", "0.12", "0.1", "0.24"],
+                    correct: 1
+                },
+                {
+                    question: "A bag contains 5 red balls and 3 blue balls. What's the probability of drawing a red ball?",
+                    options: ["3/8", "5/8", "3/5", "5/3"],
+                    correct: 1
+                },
+                {
+                    question: "What is the complement of an event with probability 0.25?",
+                    options: ["0.25", "0.5", "0.75", "1"],
+                    correct: 2
+                },
+                {
+                    question: "In a normal distribution, approximately what percentage of data falls within 2 standard deviations?",
+                    options: ["68%", "95%", "99.7%", "50%"],
+                    correct: 1
+                }
+            ],
+            numbertheory: [
+                {
+                    question: "What is the greatest common divisor (GCD) of 12 and 18?",
+                    options: ["3", "6", "9", "12"],
+                    correct: 1
+                },
+                {
+                    question: "Which of the following is a prime number?",
+                    options: ["21", "27", "29", "33"],
+                    correct: 2
+                },
+                {
+                    question: "What is the least common multiple (LCM) of 4 and 6?",
+                    options: ["10", "12", "18", "24"],
+                    correct: 1
+                },
+                {
+                    question: "17 ≡ ? (mod 5)",
+                    options: ["1", "2", "3", "4"],
+                    correct: 1
+                },
+                {
+                    question: "How many prime numbers are there between 1 and 10?",
+                    options: ["3", "4", "5", "6"],
+                    correct: 1
+                }
+            ],
+            linearalgebra: [
+                {
+                    question: "What is the determinant of the 2×2 matrix [[1,2],[3,4]]?",
+                    options: ["-2", "-1", "1", "2"],
+                    correct: 0
+                },
+                {
+                    question: "Two vectors are orthogonal if their dot product is:",
+                    options: ["1", "0", "-1", "undefined"],
+                    correct: 1
+                },
+                {
+                    question: "What is the dot product of vectors [1,2] and [3,4]?",
+                    options: ["7", "10", "11", "14"],
+                    correct: 2
+                },
+                {
+                    question: "The rank of a 3×3 identity matrix is:",
+                    options: ["0", "1", "2", "3"],
+                    correct: 3
+                },
+                {
+                    question: "A matrix is invertible if and only if its determinant is:",
+                    options: ["0", "1", "positive", "non-zero"],
+                    correct: 3
+                }
             ]
         };
 
@@ -670,6 +686,7 @@
         let currentQuestionIndex = 0;
         let userAnswers = [];
         let selectedTopic = '';
+        let quizSubmitted = false;
 
         function extractVideoId(url) {
             const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/;
@@ -710,7 +727,19 @@
             }
 
             // Show topic info
-            document.getElementById('selectedTopic').textContent = selectedTopic.charAt(0).toUpperCase() + selectedTopic.slice(1);
+            const topicNames = {
+                algebra: 'Algebra',
+                geometry: 'Geometry',
+                calculus: 'Calculus',
+                trigonometry: 'Trigonometry',
+                statistics: 'Statistics',
+                arithmetic: 'Arithmetic',
+                probability: 'Probability',
+                numbertheory: 'Number Theory',
+                linearalgebra: 'Linear Algebra'
+            };
+            
+            document.getElementById('selectedTopic').textContent = topicNames[selectedTopic];
             document.getElementById('topicInfo').style.display = 'block';
 
             // Get random questions for the selected topic
@@ -720,6 +749,7 @@
             // Reset quiz state
             currentQuestionIndex = 0;
             userAnswers = [];
+            quizSubmitted = false;
             
             // Show quiz container and hide start section
             document.getElementById('quizStart').style.display = 'none';
@@ -746,7 +776,7 @@
                     <div class="question-text">${index + 1}. ${question.question}</div>
                     <div class="options">
                         ${question.options.map((option, optionIndex) => `
-                            <label class="option">
+                            <label class="option" data-question="${index}" data-option="${optionIndex}">
                                 <input type="radio" name="question${index}" value="${optionIndex}">
                                 <span>${option}</span>
                             </label>
@@ -756,7 +786,7 @@
                 container.appendChild(questionCard);
             });
 
-            document.getElementById('submitQuizBtn').style.display = 'block';
+            document.querySelector('.submit-btn').style.display = 'block';
         }
 
         function updateProgressBar() {
@@ -764,7 +794,37 @@
             document.getElementById('progressFill').style.width = progress + '%';
         }
 
+        function highlightAnswers() {
+            currentQuiz.forEach((question, questionIndex) => {
+                const userAnswer = userAnswers[questionIndex];
+                const correctAnswer = question.correct;
+                
+                // Get all options for this question
+                const options = document.querySelectorAll(`[data-question="${questionIndex}"]`);
+                
+                options.forEach((option, optionIndex) => {
+                    // Reset classes
+                    option.classList.remove('correct', 'wrong', 'user-selected');
+                    
+                    // Highlight correct answer
+                    if (optionIndex === correctAnswer) {
+                        option.classList.add('correct');
+                    }
+                    
+                    // Highlight user's selected answer if wrong
+                    if (optionIndex === userAnswer) {
+                        option.classList.add('user-selected');
+                        if (userAnswer !== correctAnswer) {
+                            option.classList.add('wrong');
+                        }
+                    }
+                });
+            });
+        }
+
         function submitQuiz() {
+            if (quizSubmitted) return;
+            
             // Collect answers
             userAnswers = [];
             for (let i = 0; i < currentQuiz.length; i++) {
@@ -778,7 +838,9 @@
                 return;
             }
 
-            // Highlight correct and incorrect answers
+            quizSubmitted = true;
+
+            // Highlight answers
             highlightAnswers();
 
             // Calculate score
@@ -791,79 +853,44 @@
 
             const percentage = Math.round((correctAnswers / currentQuiz.length) * 100);
             
-            // Display score
+            // Display score with review section
             const scoreDisplay = document.getElementById('scoreDisplay');
             scoreDisplay.innerHTML = `
                 <div class="score-display">
                     🎉 Quiz Complete! 🎉<br>
                     You scored ${correctAnswers}/${currentQuiz.length} (${percentage}%)<br>
-                    ${getScoreMessage(percentage)}<br><br>
-                    <small>✅ Correct answers are highlighted in green<br>
-                    ❌ Your incorrect answers are highlighted in red</small>
+                    ${getScoreMessage(percentage)}
+                </div>
+                <div class="review-section">
+                    <div class="review-title">📋 Answer Review</div>
+                    <p style="text-align: center; color: #4a5568; margin-bottom: 10px;">
+                        ✅ <strong>Green</strong> = Correct Answer | 
+                        ❌ <strong>Red</strong> = Your Wrong Answer
+                    </p>
+                    <p style="text-align: center; color: #4a5568; font-size: 0.9rem;">
+                        Review the highlighted answers above to see what you got right and wrong!
+                    </p>
                 </div>
             `;
 
             // Hide submit button and show restart button
-            document.getElementById('submitQuizBtn').style.display = 'none';
-            document.getElementById('restartQuizBtn').style.display = 'block';
+            document.querySelector('.submit-btn').style.display = 'none';
+            document.querySelector('.restart-btn').style.display = 'block';
 
             // Update progress bar to 100%
             document.getElementById('progressFill').style.width = '100%';
 
-            // Disable all radio buttons
-            const radioButtons = document.querySelectorAll('input[type="radio"]');
-            radioButtons.forEach(button => {
-                button.disabled = true;
+            // Disable all radio buttons to prevent further changes
+            const allRadios = document.querySelectorAll('input[type="radio"]');
+            allRadios.forEach(radio => {
+                radio.disabled = true;
             });
-        }
 
-        function highlightAnswers() {
-            for (let i = 0; i < currentQuiz.length; i++) {
-                const question = currentQuiz[i];
-                const userAnswer = userAnswers[i];
-                const correctAnswer = question.correct;
-                
-                // Get all options for this question
-                const options = document.querySelectorAll(`input[name="question${i}"]`);
-                
-                options.forEach((option, optionIndex) => {
-                    const optionLabel = option.parentElement;
-                    
-                    // Remove any existing classes
-                    optionLabel.classList.remove('correct', 'incorrect', 'user-selected');
-                    
-                    // Highlight the correct answer in green
-                    if (optionIndex === correctAnswer) {
-                        optionLabel.classList.add('correct');
-                        
-                        // Add checkmark to correct answer
-                        if (!optionLabel.querySelector('.answer-indicator')) {
-                            const indicator = document.createElement('span');
-                            indicator.className = 'answer-indicator';
-                            indicator.innerHTML = '✅';
-                            optionLabel.appendChild(indicator);
-                        }
-                    }
-                    
-                    // Highlight user's incorrect answer in red
-                    if (optionIndex === userAnswer && userAnswer !== correctAnswer) {
-                        optionLabel.classList.add('incorrect', 'user-selected');
-                        
-                        // Add X mark to incorrect answer
-                        if (!optionLabel.querySelector('.answer-indicator')) {
-                            const indicator = document.createElement('span');
-                            indicator.className = 'answer-indicator';
-                            indicator.innerHTML = '❌';
-                            optionLabel.appendChild(indicator);
-                        }
-                    }
-                    
-                    // Mark user's correct answer
-                    if (optionIndex === userAnswer && userAnswer === correctAnswer) {
-                        optionLabel.classList.add('user-selected');
-                    }
-                });
-            }
+            // Remove hover effects from options
+            const allOptions = document.querySelectorAll('.option');
+            allOptions.forEach(option => {
+                option.style.cursor = 'default';
+            });
         }
 
         function getScoreMessage(percentage) {
@@ -880,28 +907,13 @@
             document.getElementById('quizContainer').style.display = 'none';
             document.getElementById('topicInfo').style.display = 'none';
             document.getElementById('scoreDisplay').innerHTML = '';
-            document.getElementById('restartQuizBtn').style.display = 'none';
+            document.querySelector('.restart-btn').style.display = 'none';
             document.getElementById('progressFill').style.width = '0%';
             
             // Clear topic selection
             document.getElementById('topicSelect').value = '';
             selectedTopic = '';
-            
-            // Clear any highlighting and re-enable radio buttons
-            const options = document.querySelectorAll('.option');
-            options.forEach(option => {
-                option.classList.remove('correct', 'incorrect', 'user-selected');
-                const indicator = option.querySelector('.answer-indicator');
-                if (indicator) {
-                    indicator.remove();
-                }
-            });
-            
-            const radioButtons = document.querySelectorAll('input[type="radio"]');
-            radioButtons.forEach(button => {
-                button.disabled = false;
-                button.checked = false;
-            });
+            quizSubmitted = false;
         }
 
         // Add some interactive animations
@@ -911,12 +923,6 @@
             elements.forEach((el, index) => {
                 el.style.animationDelay = `${index * 0.2}s`;
             });
-
-            // Add event listeners for buttons
-            document.getElementById('loadVideoBtn').addEventListener('click', loadVideo);
-            document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
-            document.getElementById('submitQuizBtn').addEventListener('click', submitQuiz);
-            document.getElementById('restartQuizBtn').addEventListener('click', restartQuiz);
         });
     </script>
 </body>
