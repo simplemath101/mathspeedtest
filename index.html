@@ -362,7 +362,7 @@
                     <label for="videoUrl">YouTube Video URL:</label>
                     <input type="text" id="videoUrl" class="video-input" 
                            placeholder="Paste YouTube video URL here...">
-                    <button class="load-btn" onclick="loadVideo()">Load Video</button>
+                    <button class="load-btn" id="loadVideoBtn">Load Video</button>
                 </div>
 
                 <div class="video-input-group">
@@ -397,7 +397,7 @@
 
                 <div id="quizStart">
                     <p>Select a topic and click the button below to start your practice quiz!</p>
-                    <button class="start-quiz-btn" onclick="startQuiz()">Start Practice Quiz</button>
+                    <button class="start-quiz-btn" id="startQuizBtn">Start Practice Quiz</button>
                 </div>
 
                 <div id="quizContainer" class="quiz-container">
@@ -409,9 +409,9 @@
                         <!-- Questions will be generated here -->
                     </div>
                     
-                    <button class="submit-btn" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+                    <button class="submit-btn" id="submitQuizBtn" style="display: none;">Submit Quiz</button>
                     <div id="scoreDisplay"></div>
-                    <button class="restart-btn" onclick="restartQuiz()" style="display: none;">Take Another Quiz</button>
+                    <button class="restart-btn" id="restartQuizBtn" style="display: none;">Take Another Quiz</button>
                 </div>
             </div>
         </div>
@@ -756,7 +756,7 @@
                 container.appendChild(questionCard);
             });
 
-            document.querySelector('.submit-btn').style.display = 'block';
+            document.getElementById('submitQuizBtn').style.display = 'block';
         }
 
         function updateProgressBar() {
@@ -804,8 +804,8 @@
             `;
 
             // Hide submit button and show restart button
-            document.querySelector('.submit-btn').style.display = 'none';
-            document.querySelector('.restart-btn').style.display = 'block';
+            document.getElementById('submitQuizBtn').style.display = 'none';
+            document.getElementById('restartQuizBtn').style.display = 'block';
 
             // Update progress bar to 100%
             document.getElementById('progressFill').style.width = '100%';
@@ -880,7 +880,7 @@
             document.getElementById('quizContainer').style.display = 'none';
             document.getElementById('topicInfo').style.display = 'none';
             document.getElementById('scoreDisplay').innerHTML = '';
-            document.querySelector('.restart-btn').style.display = 'none';
+            document.getElementById('restartQuizBtn').style.display = 'none';
             document.getElementById('progressFill').style.width = '0%';
             
             // Clear topic selection
@@ -911,6 +911,12 @@
             elements.forEach((el, index) => {
                 el.style.animationDelay = `${index * 0.2}s`;
             });
+
+            // Add event listeners for buttons
+            document.getElementById('loadVideoBtn').addEventListener('click', loadVideo);
+            document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
+            document.getElementById('submitQuizBtn').addEventListener('click', submitQuiz);
+            document.getElementById('restartQuizBtn').addEventListener('click', restartQuiz);
         });
     </script>
 </body>
