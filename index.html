@@ -3,365 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mathematics Quiz Speed Test</title>
-        <style>
-        :root {
-            --primary-color: #4a6fa5;
-            --secondary-color: #6889b8;
-            --accent-color: #ffd700;
-            --correct-color: #4caf50;
-            --incorrect-color: #f44336;
-            --timer-bg: #e0e0e0;
-            --white: #ffffff;
-            --dark: #333333;
-            --gray: #808080;
-            --light-gray: #f5f5f5;
-            --gradient-primary: linear-gradient(135deg, #4a6fa5, #6889b8);
-            --gradient-success: linear-gradient(135deg, #4caf50, #45a049);
-            --gradient-error: linear-gradient(135deg, #f44336, #e53935);
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-
+    <title>MathLearn Pro - Interactive Math Learning Platform</title>
+    <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--dark);
-            line-height: 1.6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 2rem 0;
+            color: #333;
         }
 
         .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: var(--white);
-            border-radius: 20px;
-            box-shadow: var(--shadow-lg);
-            transform: translateY(0);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        header {
+        .header {
             text-align: center;
-            margin-bottom: 2rem;
-            animation: fadeInDown 0.8s ease-out;
+            margin-bottom: 40px;
+            color: white;
         }
 
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-            font-size: 2.5rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s ease-out;
         }
 
-        .topic-selection {
-            margin-bottom: 2rem;
-            animation: fadeInUp 0.8s ease-out;
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s both;
         }
 
-        label {
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .video-section, .quiz-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4c51bf;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .video-input-group {
+            margin-bottom: 20px;
+        }
+
+        .video-input-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
         }
 
-        select {
+        .video-input, .topic-select {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #ddd;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 1rem;
-            background-color: var(--white);
-            cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: var(--shadow-sm);
+            background: white;
         }
 
-        select:hover, select:focus {
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-md);
+        .video-input:focus, .topic-select:focus {
             outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: var(--gradient-primary);
-            color: var(--white);
+        .load-btn, .start-quiz-btn, .submit-btn, .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
+            padding: 12px 24px;
             border-radius: 10px;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: var(--shadow-md);
-            position: relative;
-            overflow: hidden;
+            margin-top: 10px;
         }
 
-        .btn:hover {
+        .load-btn:hover, .start-quiz-btn:hover, .submit-btn:hover, .restart-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .btn:active {
-            transform: translateY(0);
+        .video-container {
+            margin-top: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .video-container iframe {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .btn:hover::after {
-            transform: translateX(100%);
-        }
-
-        .btn-start {
-            display: block;
-            width: 100%;
-            margin-top: 1rem;
-            font-weight: bold;
-            font-size: 1.1rem;
-            padding: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            height: 300px;
+            border: none;
         }
 
         .quiz-container {
             display: none;
-            animation: fadeIn 0.5s ease-out;
         }
 
-        .question-container {
-            margin-bottom: 1.5rem;
-            background: var(--white);
-            padding: 1.5rem;
+        .question-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
             border-radius: 15px;
-            box-shadow: var(--shadow-md);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            animation: slideInLeft 0.5s ease-out;
         }
 
-        .timer-container {
-            margin-bottom: 1rem;
-        }
-
-        .timer-bar {
-            height: 12px;
-            width: 100%;
-            background-color: var(--timer-bg);
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .timer-progress {
-            height: 100%;
-            width: 100%;
-            background: var(--gradient-primary);
-            transition: width 1s linear;
-            position: relative;
-        }
-
-        .timer-progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        .question {
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--primary-color);
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2d3748;
         }
 
         .options {
-            list-style-type: none;
+            display: grid;
+            gap: 10px;
         }
 
         .option {
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
-            box-shadow: var(--shadow-sm);
         }
 
         .option:hover {
-            transform: translateX(5px);
-            background-color: #e8e8e8;
-            box-shadow: var(--shadow-md);
+            border-color: #667eea;
+            background: #f7fafc;
         }
 
-        .option.correct {
-            background: var(--gradient-success);
-            color: var(--white);
-            border-color: #45a049;
+        .option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
         }
 
-        .option.incorrect {
-            background: var(--gradient-error);
-            color: var(--white);
-            border-color: #e53935;
-        }
-
-        .feedback {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 10px;
+        .score-display {
             text-align: center;
-            font-weight: bold;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        .correct-feedback {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(69, 160, 73, 0.1));
-            color: var(--correct-color);
-            border: 1px solid rgba(76, 175, 80, 0.3);
-        }
-
-        .incorrect-feedback {
-            background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(229, 57, 53, 0.1));
-            color: var(--incorrect-color);
-            border: 1px solid rgba(244, 67, 54, 0.3);
-        }
-
-        .question-counter {
-            text-align: center;
-            margin-bottom: 1rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            font-size: 1.2rem;
-        }
-
-        .results {
-            display: none;
-            text-align: center;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .score {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .restart-btn {
-            margin-top: 1rem;
-        }
-
-        .blurred-option {
-            opacity: 0.6;
-            cursor: not-allowed;
-            filter: blur(1px);
-        }
-
-        .upgrade-message {
-            display: none;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 1rem;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 140, 0, 0.1));
-            border: 1px solid var(--accent-color);
-            border-radius: 10px;
-            font-weight: bold;
-            color: #ff8c00;
-            animation: pulse 2s infinite;
-        }
-
-        /* Popup ad styles */
-        .popup-ad {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
             color: white;
-            text-align: center;
-            z-index: 9999;
-            text-decoration: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .popup-content {
-            width: 100%;
-            max-width: 400px;
             padding: 20px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
-        .popup-ad h3 {
+        .topic-info {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
             color: white;
-            font-size: 28px;
-            margin: 20px 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .popup-ad p {
-            color: white;
-            font-size: 18px;
-            line-height: 1.6;
+            padding: 15px;
+            border-radius: 10px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .progress-bar {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
         }
 
         @keyframes fadeInDown {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-30px);
             }
             to {
                 opacity: 1;
@@ -372,7 +221,7 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -380,10 +229,21 @@
             }
         }
 
-        @keyframes slideIn {
+        @keyframes slideInUp {
             from {
                 opacity: 0;
-                transform: translateX(-20px);
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
             }
             to {
                 opacity: 1;
@@ -391,3712 +251,476 @@
             }
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                margin: 1rem;
-                padding: 1rem;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .question {
-                font-size: 1.2rem;
-            }
-
-            .option {
-                padding: 0.75rem;
-            }
-        }
-
-        /* Add styles for share functionality */
-        .share-container {
-            background-color: #f4f4f4;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .share-progress {
+        .math-symbols {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            margin: 15px 0;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
             overflow: hidden;
         }
 
-        .share-progress-bar {
-            width: 0%;
-            height: 20px;
-            background-color: #4CAF50;
-            transition: width 0.5s ease;
+        .symbol {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 2rem;
+            animation: float 6s ease-in-out infinite;
         }
 
-        .telegram-share-btn {
-            background-color: #2eaade;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 10px 0;
-            transition: background-color 0.3s;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
 
-        .telegram-share-btn:hover {
-            background-color: #239ac4;
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .video-section, .quiz-section {
+                padding: 20px;
+            }
         }
 
-        .telegram-share-btn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        .share-instructions {
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        /* Add styles for answers summary */
-        .answers-section {
-            margin: 20px 0;
-            padding: 15px;
+        .error-message {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 10px 15px;
             border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid #e53e3e;
         }
 
-        #correct-answers {
-            background-color: #e8f5e9;
-        }
-
-        #wrong-answers {
-            background-color: #ffebee;
-        }
-
-        .answers-section h4 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .answers-section ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .answers-section li {
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 4px;
-            background-color: white;
+        .success-message {
+            background: #c6f6d5;
+            color: #22543d;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid #38a169;
         }
     </style>
 </head>
 <body>
+    <div class="math-symbols">
+        <div class="symbol" style="top: 10%; left: 10%; animation-delay: 0s;">∑</div>
+        <div class="symbol" style="top: 20%; left: 80%; animation-delay: 1s;">∫</div>
+        <div class="symbol" style="top: 70%; left: 15%; animation-delay: 2s;">π</div>
+        <div class="symbol" style="top: 60%; left: 85%; animation-delay: 3s;">√</div>
+        <div class="symbol" style="top: 30%; left: 5%; animation-delay: 4s;">∞</div>
+        <div class="symbol" style="top: 80%; left: 70%; animation-delay: 5s;">θ</div>
+    </div>
+
     <div class="container">
-        <header>
-            <h1>Mathematics Quiz Speed Test</h1>
-            <p>Test your math skills with a timed quiz!</p>
-        </header>
-
-        <div class="topic-selection" id="topicSelection">
-            <label for="topic">Select a Topic:</label>
-            <select id="topic">
-                <option value="">-- Select a topic --</option>
-                <option value="algebra">Algebra</option>
-                <option value="geometry">Geometry</option>
-                <option value="calculus">Calculus</option>
-                <option value="statistics" class="blurred-option">Statistics</option>
-                <option value="trigonometry" class="blurred-option">Trigonometry</option>
-                <option value="number-theory" class="blurred-option">Number Theory</option>
-                <option value="discrete-math" class="blurred-option">Discrete Mathematics</option>
-            </select>
-            <button id="startBtn" class="btn btn-start">Start Quiz</button>
-            <div id="upgradeMessage" class="upgrade-message">UPGRADE TO PRO</div>
+        <div class="header">
+            <h1>🧮 MathLearn Pro</h1>
+            <p>Master Mathematics Through Interactive Video Learning & Practice Quizzes</p>
         </div>
 
-        <div id="quizContainer" class="quiz-container">
-            <div class="question-counter" id="questionCounter">Question 1 of 10</div>
-            <div class="timer-container">
-                <div class="timer-bar">
-                    <div class="timer-progress" id="timerProgress"></div>
+        <div class="main-content">
+            <div class="video-section">
+                <h2 class="section-title">📺 Video Learning Center</h2>
+                
+                <div class="video-input-group">
+                    <label for="videoUrl">YouTube Video URL:</label>
+                    <input type="text" id="videoUrl" class="video-input" 
+                           placeholder="Paste YouTube video URL here...">
+                    <button class="load-btn" onclick="loadVideo()">Load Video</button>
                 </div>
-            </div>
-            <div class="question-container">
-                <div class="question" id="question"></div>
-                <ul class="options" id="options"></ul>
-                <div class="feedback" id="feedback"></div>
-            </div>
-        </div>
 
-        <div id="results" class="results">
-            <h2>Quiz Completed!</h2>
-            <p>Your score:</p>
-            <div class="score" id="score">**</div>
-            
-            <div class="share-container">
-                <h3>Share and Unlock Full Score!</h3>
-                <p class="share-instructions">Share the quiz with friends to reveal your complete results!</p>
-                
-                <div class="share-progress">
-                    <div class="share-progress-bar" id="share-progress-bar"></div>
+                <div class="video-input-group">
+                    <label for="topicSelect">Select Related Topic:</label>
+                    <select id="topicSelect" class="topic-select">
+                        <option value="">Choose a math topic...</option>
+                        <option value="algebra">Algebra</option>
+                        <option value="geometry">Geometry</option>
+                        <option value="calculus">Calculus</option>
+                        <option value="trigonometry">Trigonometry</option>
+                        <option value="statistics">Statistics</option>
+                        <option value="arithmetic">Arithmetic</option>
+                    </select>
                 </div>
-                
-                <p id="share-count-text">Shares: 0/5</p>
-                
-                <button id="telegram-share-btn" class="telegram-share-btn">
-                    Share on Telegram
-                </button>
-                
-                <button id="reveal-score-btn" class="btn" disabled>
-                    Reveal Full Score
-                </button>
+
+                <div id="videoContainer" class="video-container" style="display: none;">
+                    <!-- Video will be loaded here -->
+                </div>
+
+                <div id="messageArea"></div>
             </div>
-            
-            <div id="answers-summary" style="display: none;">
-                <h3>Your Answers Summary</h3>
-                <div id="correct-answers" class="answers-section">
-                    <h4>Correct Answers: <span id="correct-count">0</span></h4>
-                    <ul id="correct-list"></ul>
+
+            <div class="quiz-section">
+                <h2 class="section-title">🎯 Practice Quiz</h2>
+                
+                <div id="topicInfo" class="topic-info" style="display: none;">
+                    <strong>Selected Topic: <span id="selectedTopic"></span></strong>
                 </div>
-                <div id="wrong-answers" class="answers-section">
-                    <h4>Incorrect Answers: <span id="wrong-count">0</span></h4>
-                    <ul id="wrong-list"></ul>
+
+                <div id="quizStart">
+                    <p>Select a topic and click the button below to start your practice quiz!</p>
+                    <button class="start-quiz-btn" onclick="startQuiz()">Start Practice Quiz</button>
+                </div>
+
+                <div id="quizContainer" class="quiz-container">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    
+                    <div id="questionsContainer">
+                        <!-- Questions will be generated here -->
+                    </div>
+                    
+                    <button class="submit-btn" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+                    <div id="scoreDisplay"></div>
+                    <button class="restart-btn" onclick="restartQuiz()" style="display: none;">Take Another Quiz</button>
                 </div>
             </div>
-            
-            <p id="timeStats"></p>
-            <button id="restartBtn" class="btn restart-btn" style="display: none;">Take Another Quiz</button>
         </div>
     </div>
 
-    <!-- Add popup ad HTML -->
-    <a id="popupAd" class="popup-ad" href="https://simplemath101.github.io/mathstudenttestimonials/">
-    <button class="close-button" onclick="closePopup(event)">✕</button>
-    <div class="popup-content">
-        <h3>🚀 Upgrade to Quiz Pro!</h3>
-        <p><strong>Unlock More Features:</strong> Get access to all MATH Quiz Topics, advanced analytics, and exclusive rewards!</p>
-        <p>Join the Pro Version now and take your learning to the next level! 🚀</p>    
-        <div class="cta-button">
-            CLICK HERE TO UPGRADE TO PRO
-        </div>
-    </div>
-</a>
     <script>
-        // DOM elements
-        const topicSelectionEl = document.getElementById('topicSelection');
-        const topicSelectEl = document.getElementById('topic');
-        const startBtn = document.getElementById('startBtn');
-        const upgradeMessageEl = document.getElementById('upgradeMessage');
-        const quizContainerEl = document.getElementById('quizContainer');
-        const questionCounterEl = document.getElementById('questionCounter');
-        const questionEl = document.getElementById('question');
-        const optionsEl = document.getElementById('options');
-        const feedbackEl = document.getElementById('feedback');
-        const timerProgressEl = document.getElementById('timerProgress');
-        const resultsEl = document.getElementById('results');
-        const scoreEl = document.getElementById('score');
-        const timeStatsEl = document.getElementById('timeStats');
-        const restartBtn = document.getElementById('restartBtn');
-
-        // Quiz state
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let timer;
-        let timeLeft = 60;
-        let questions = [];
-        let startTime, endTime;
-        let answeredQuestions = 0;
-        let totalTimeUsed = 0;
-        let userAnswers = [];
-        let quizScore = 0;
-        let shareCount = 0;
-
-        // Additional DOM elements for new functionality
-        const telegramShareBtn = document.getElementById('telegram-share-btn');
-        const revealScoreBtn = document.getElementById('reveal-score-btn');
-        const shareProgressBar = document.getElementById('share-progress-bar');
-        const shareCountText = document.getElementById('share-count-text');
-        const answersSummary = document.getElementById('answers-summary');
-
-
-        // Questions bank
-        const questionsBank = {
+        // Quiz questions database
+        const quizQuestions = {
             algebra: [
                 {
                     question: "Solve for x: 2x + 5 = 13",
-                    options: ["x = 4", "x = 5", "x = 3", "x = 6"],
-                    correctAnswer: 0
+                    options: ["x = 4", "x = 6", "x = 8", "x = 9"],
+                    correct: 0
                 },
                 {
-                    question: "Simplify: 3(x - 2) - 2(x + 1)",
-                    options: ["x - 8", "x - 4", "5x - 8", "x - 6"],
-                    correctAnswer: 0
+                    question: "What is the slope of the line y = 3x - 2?",
+                    options: ["3", "-2", "1", "5"],
+                    correct: 0
                 },
                 {
                     question: "Factor: x² - 9",
-                    options: ["(x+3)(x-3)", "(x-3)²", "(x+3)²", "(x+9)(x-1)"],
-                    correctAnswer: 0
+                    options: ["(x - 3)(x + 3)", "(x - 9)(x + 1)", "(x - 3)²", "Cannot be factored"],
+                    correct: 0
                 },
                 {
-                    question: "Solve: 4x - 2 > 10",
-                    options: ["x > 3", "x < 3", "x > 2", "x < 2"],
-                    correctAnswer: 0
+                    question: "If f(x) = 2x + 1, what is f(3)?",
+                    options: ["5", "6", "7", "8"],
+                    correct: 2
                 },
                 {
-                    question: "If f(x) = 2x² + 3x - 1, find f(2)",
-                    options: ["13", "11", "15", "9"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "Solve the system: x + y = 5, 2x - y = 4",
-                    options: ["x = 3, y = 2", "x = 2, y = 3", "x = 4, y = 1", "x = 1, y = 4"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "Which is the quadratic formula?",
-                    options: ["x = (-b ± √(b² - 4ac)) / 2a", "x = -b/a", "x = -c/b", "x = (a ± √(b² - 4ac)) / 2a"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "Simplify: (3x² - 2x + 1) - (x² + 2x - 3)",
-                    options: ["2x² - 4x + 4", "4x² - 4x - 2", "2x² - 4x - 4", "4x² + 0x + 4"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "Solve: |2x - 4| = 6",
-                    options: ["x = -1 or x = 5", "x = 1 or x = 5", "x = -1 or x = -5", "x = 1 or x = -5"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "If y varies directly with x, and y = 15 when x = 3, find y when x = 7",
-                    options: ["y = 35", "y = 21", "y = 28", "y = 45"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "Expand: (x + 2)³",
-                    options: ["x³ + 6x² + 12x + 8", "x³ + 6x² + 12x + 6", "x³ + 6x² + 6x + 8", "x³ + 3x² + 3x + 1"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "Solve for x: log₂(x) = 3",
-                    options: ["x = 8", "x = 6", "x = 9", "x = 16"],
-                    correctAnswer: 0
-                },
-                        {
-            question: "What is the value of x in the equation 5x + 2 = 17?",
-            options: ["x = 3", "x = 5", "x = 7", "x = 10"],
-            answer: 1
-        },
-        {
-            question: "Which of the following represents the quadratic formula?",
-            options: ["x = (-b ± √(b² - 4ac)) / 2a", "x = (-b ± √(4ac - b²)) / 2a", "x = (b ± √(b² - 4ac)) / 2a", "x = (-b ± √(b² + 4ac)) / 2a"],
-            answer: 0
-        },
-        {
-            question: "Simplify: (3x - 2) + (5x + 4)",
-            options: ["8x + 2", "8x - 6", "2x + 2", "15x - 2"],
-            answer: 0
-        },
-        {
-            question: "What is the solution to 2(x - 4) = 10?",
-            options: ["x = 2", "x = 7", "x = 9", "x = 6"],
-            answer: 1
-        },
-        {
-            question: "Which of the following is an identity?",
-            options: ["2x + 3 = 5", "x² - 4 = (x - 2)(x + 2)", "3x - 7 = 2x + 1", "5x + 2 = 0"],
-            answer: 1
-        },
-        {
-            question: "Factorize: x² - 4x - 12",
-            options: ["(x - 6)(x + 2)", "(x - 4)(x - 3)", "(x + 6)(x - 2)", "(x + 4)(x - 3)"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: x² = 49",
-            options: ["x = 49", "x = 7", "x = ±7", "x = -7"],
-            answer: 2
-        },
-        {
-            question: "What is the slope of the line y = 4x - 7?",
-            options: ["4", "-7", "-4", "7"],
-            answer: 0
-        },
-        {
-            question: "Which of the following is a linear equation?",
-            options: ["y = 3x² + 2x", "y = 2x + 5", "y = x³ - x", "y = 4/x"],
-            answer: 1
-        },
-        {
-            question: "Solve for x: 3(x - 2) = 2(x + 1)",
-            options: ["x = 5", "x = 6", "x = 7", "x = 8"],
-            answer: 0
-        },
-        {
-            question: "Which of the following equations represents a parabola?",
-            options: ["y = 2x + 3", "y = x² - 5x + 6", "y = 3x - 1", "y = 5x + 4"],
-            answer: 1
-        },
-        {
-            question: "If f(x) = 2x² - 3x + 5, find f(2).",
-            options: ["5", "7", "9", "11"],
-            answer: 3
-        },
-        {
-            question: "What is the inverse of the function f(x) = 3x - 4?",
-            options: ["f⁻¹(x) = (x + 4)/3", "f⁻¹(x) = (x - 4)/3", "f⁻¹(x) = 3(x + 4)", "f⁻¹(x) = 3(x - 4)"],
-            answer: 0
-        },
-        {
-            question: "Find the product of (x - 5)(x + 3).",
-            options: ["x² - 2x - 15", "x² + 8x - 15", "x² - 8x + 15", "x² - 3x - 15"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: log₂(x) = 3",
-            options: ["x = 6", "x = 8", "x = 9", "x = 12"],
-            answer: 1
-        },
-        {
-            question: "Which of the following is an example of a rational function?",
-            options: ["y = 3x² - 2x", "y = (x + 2)/(x - 3)", "y = x³ + 4", "y = 2x - 5"],
-            answer: 1
-        },
-        {
-            question: "Find the y-intercept of the equation 2x - 3y = 6.",
-            options: ["y = -2", "y = -3", "y = 3", "y = 2"],
-            answer: 2
-        },
-        {
-            question: "What is the degree of the polynomial 4x⁵ - 3x³ + 2x - 7?",
-            options: ["1", "3", "5", "7"],
-            answer: 2
-        },
-        {
-            question: "What is the sum of the roots of the equation x² - 7x + 10 = 0?",
-            options: ["10", "7", "5", "-7"],
-            answer: 1
-        },
-                        {
-            question: "Solve for x: 4x - 5 = 3x + 7",
-            options: ["x = 12", "x = -12", "x = 7", "x = -7"],
-            answer: 0
-        },
-        {
-            question: "Factorize: x² + 6x + 8",
-            options: ["(x + 4)(x + 2)", "(x + 3)(x + 3)", "(x - 4)(x + 2)", "(x + 8)(x - 1)"],
-            answer: 0
-        },
-        {
-            question: "Which of the following equations represents a direct variation?",
-            options: ["y = 3x + 2", "y = 4/x", "y = 5x", "y = x² - 2"],
-            answer: 2
-        },
-        {
-            question: "Solve for x: (x + 3)(x - 2) = 0",
-            options: ["x = -3, 2", "x = 3, -2", "x = -3, -2", "x = 3, 2"],
-            answer: 0
-        },
-        {
-            question: "Find the discriminant of the quadratic equation x² - 4x + 3 = 0.",
-            options: ["4", "8", "0", "1"],
-            answer: 3
-        },
-        {
-            question: "If f(x) = x² - 2x + 1, what is f(3)?",
-            options: ["1", "4", "9", "16"],
-            answer: 2
-        },
-        {
-            question: "Which equation represents a horizontal line?",
-            options: ["y = 4", "x = 4", "y = 2x + 3", "y = x² - 1"],
-            answer: 0
-        },
-        {
-            question: "What is the vertex of the parabola y = (x - 3)² + 2?",
-            options: ["(3, 2)", "(-3, 2)", "(2, 3)", "(-2, -3)"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 2^(x+1) = 16",
-            options: ["x = 2", "x = 3", "x = 4", "x = 5"],
-            answer: 1
-        },
-        {
-            question: "Find the sum of the roots of the equation x² - 5x + 6 = 0.",
-            options: ["6", "5", "-5", "-6"],
-            answer: 1
-        },
-        {
-            question: "What is the y-intercept of the function y = 3x - 4?",
-            options: ["3", "-4", "4", "-3"],
-            answer: 1
-        },
-        {
-            question: "Which function represents a cubic function?",
-            options: ["y = x² + 2", "y = 2x³ - x", "y = 3x + 1", "y = 4/x"],
-            answer: 1
-        },
-        {
-            question: "Solve for x: 3x² = 27",
-            options: ["x = 3", "x = ±3", "x = 9", "x = ±9"],
-            answer: 1
-        },
-        {
-            question: "What is the equation of a line with slope 2 and y-intercept -5?",
-            options: ["y = 2x - 5", "y = -2x + 5", "y = 5x - 2", "y = 2x + 5"],
-            answer: 0
-        },
-        {
-            question: "Which equation represents an inverse variation?",
-            options: ["y = x + 3", "y = 4x - 2", "y = 5/x", "y = x² + 1"],
-            answer: 2
-        },
-        {
-            question: "Find the x-intercepts of y = x² - 9.",
-            options: ["x = ±3", "x = 9", "x = -9", "x = 0"],
-            answer: 0
-        },
-        {
-            question: "If a > 0, which of the following represents an increasing exponential function?",
-            options: ["y = 2x - 1", "y = a^x", "y = -a^x", "y = x² - 2"],
-            answer: 1
-        },
-        {
-            question: "Solve for x: log₃(27) = x",
-            options: ["x = 2", "x = 3", "x = 4", "x = 5"],
-            answer: 1
-        },
-        {
-            question: "Which of the following is the standard form of a quadratic equation?",
-            options: ["y = ax + b", "ax² + bx + c = 0", "y = ab^x", "y = x² + bx + c"],
-            answer: 1
-        },
-        {
-            question: "If f(x) = 3x - 1, what is f⁻¹(x)?",
-            options: ["(x + 1)/3", "(x - 1)/3", "3(x - 1)", "3(x + 1)"],
-            answer: 1
-        },
-                        {
-            question: "Solve for x: 2x + 3 = 9",
-            options: ["x = 3", "x = 4", "x = 6", "x = 9"],
-            answer: 0
-        },
-        {
-            question: "What is the factored form of x² - 5x + 6?",
-            options: ["(x - 2)(x - 3)", "(x + 2)(x + 3)", "(x - 6)(x + 1)", "(x - 5)(x + 1)"],
-            answer: 0
-        },
-        {
-            question: "Which equation represents a parabola opening downwards?",
-            options: ["y = -x² + 3x - 5", "y = x² - 3x + 5", "y = 3x + 2", "y = 2/x"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 5(x - 2) = 20",
-            options: ["x = 2", "x = 4", "x = 6", "x = 8"],
-            answer: 2
-        },
-        {
-            question: "Find the greatest common factor (GCF) of 18x² and 24x³.",
-            options: ["6x²", "3x", "12x²", "6x³"],
-            answer: 0
-        },
-        {
-            question: "What is the slope of the line passing through (2, 3) and (4, 7)?",
-            options: ["1", "2", "3", "4"],
-            answer: 1
-        },
-        {
-            question: "What is the domain of the function f(x) = 1/(x - 3)?",
-            options: ["All real numbers", "x ≠ 3", "x > 3", "x < 3"],
-            answer: 1
-        },
-        {
-            question: "Find the value of x: x² - 16 = 0",
-            options: ["x = ±4", "x = 4", "x = -4", "x = 16"],
-            answer: 0
-        },
-        {
-            question: "What is the inverse of the function f(x) = x + 5?",
-            options: ["f⁻¹(x) = x - 5", "f⁻¹(x) = x + 5", "f⁻¹(x) = -x - 5", "f⁻¹(x) = -x + 5"],
-            answer: 0
-        },
-        {
-            question: "What is the solution to the system of equations: y = 2x + 1 and y = -x + 4?",
-            options: ["(1, 3)", "(2, 5)", "(3, 7)", "(4, 9)"],
-            answer: 0
-        },
-        {
-            question: "Which expression is equivalent to (x² - 4)/(x - 2)?",
-            options: ["x + 2", "x - 2", "x² - 2x", "x + 4"],
-            answer: 0
-        },
-        {
-            question: "What is the sum of the solutions to x² - 8x + 15 = 0?",
-            options: ["8", "-8", "15", "-15"],
-            answer: 0
-        },
-        {
-            question: "Find the roots of x² - 3x - 10 = 0.",
-            options: ["x = -2, 5", "x = 2, -5", "x = -3, 10", "x = 3, -10"],
-            answer: 0
-        },
-        {
-            question: "If a function is increasing as x increases, what can be said about its slope?",
-            options: ["Slope is negative", "Slope is zero", "Slope is positive", "Slope does not exist"],
-            answer: 2
-        },
-        {
-            question: "Find the solution to 4^(x+1) = 16.",
-            options: ["x = 2", "x = 3", "x = 4", "x = 5"],
-            answer: 0
-        },
-        {
-            question: "What is the y-intercept of the line given by 3x + 2y = 6?",
-            options: ["y = 3", "y = 6", "y = -3", "y = -6"],
-            answer: 2
-        },
-        {
-            question: "Solve for x: |x - 3| = 7",
-            options: ["x = -4, 10", "x = 4, -10", "x = 3, 7", "x = -3, 7"],
-            answer: 0
-        },
-        {
-            question: "Which of the following represents a function?",
-            options: ["y² = x", "x² + y² = 9", "y = 3x - 1", "x = y² - 4"],
-            answer: 2
-        },
-        {
-            question: "If f(x) = 2x² - 3x + 1, what is f(0)?",
-            options: ["1", "-3", "2", "0"],
-            answer: 0
-        },
-        {
-            question: "Which of the following graphs represents an absolute value function?",
-            options: ["A straight line", "A parabola", "A V-shape", "An exponential curve"],
-            answer: 2
-        },
-                        {
-            question: "Solve for x: 3(x - 4) = 2x + 5",
-            options: ["x = 7", "x = 9", "x = 11", "x = -7"],
-            answer: 0
-        },
-        {
-            question: "What is the factored form of x² - 7x + 10?",
-            options: ["(x - 5)(x - 2)", "(x - 10)(x + 1)", "(x - 7)(x + 10)", "(x + 5)(x - 2)"],
-            answer: 0
-        },
-        {
-            question: "Which function represents a quadratic equation?",
-            options: ["f(x) = x² + 2x - 3", "f(x) = 3x + 5", "f(x) = 2^x", "f(x) = 1/x"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 5x² = 45",
-            options: ["x = ±3", "x = ±5", "x = 9", "x = -9"],
-            answer: 0
-        },
-        {
-            question: "Find the value of x: log₂(32) = x",
-            options: ["x = 3", "x = 4", "x = 5", "x = 6"],
-            answer: 2
-        },
-        {
-            question: "What is the equation of a line with slope -3 and y-intercept 4?",
-            options: ["y = -3x + 4", "y = 3x - 4", "y = 4x - 3", "y = -4x + 3"],
-            answer: 0
-        },
-        {
-            question: "What is the solution to the inequality 2x - 3 > 5?",
-            options: ["x > 4", "x < 4", "x > -4", "x < -4"],
-            answer: 0
-        },
-        {
-            question: "Find the determinant of the matrix | 2 3 | | 4 5 |.",
-            options: ["2", "-2", "7", "-7"],
-            answer: 3
-        },
-        {
-            question: "What is the cube root of 27?",
-            options: ["2", "3", "4", "5"],
-            answer: 1
-        },
-        {
-            question: "Solve for x: (x - 1)² = 16",
-            options: ["x = -3, 5", "x = -4, 4", "x = -5, 7", "x = -7, 3"],
-            answer: 0
-        },
-        {
-            question: "What is the x-intercept of the function y = 2x - 6?",
-            options: ["(3, 0)", "(0, 3)", "(-3, 0)", "(0, -3)"],
-            answer: 0
-        },
-        {
-            question: "Find the sum of the first 5 terms of the arithmetic sequence 3, 6, 9, 12, 15.",
-            options: ["50", "55", "60", "75"],
-            answer: 1
-        },
-        {
-            question: "If f(x) = x³ - 4x, what is f(-2)?",
-            options: ["-12", "-4", "12", "4"],
-            answer: 0
-        },
-        {
-            question: "Which of the following is an irrational number?",
-            options: ["√2", "4", "3/2", "0.75"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 2^(x+1) = 8",
-            options: ["x = 1", "x = 2", "x = 3", "x = 4"],
-            answer: 1
-        },
-        {
-            question: "Which function represents an absolute value equation?",
-            options: ["f(x) = |x - 3|", "f(x) = x² + 5", "f(x) = 3x + 7", "f(x) = 2^x"],
-            answer: 0
-        },
-        {
-            question: "Find the range of f(x) = x² - 4.",
-            options: ["y ≥ -4", "y > -4", "y ≤ -4", "y < -4"],
-            answer: 0
-        },
-        {
-            question: "If x² - 9 = 0, what are the solutions for x?",
-            options: ["x = 3", "x = -3", "x = ±3", "x = 9"],
-            answer: 2
-        },
-        {
-            question: "What is the slope of the line 4x + 2y = 6?",
-            options: ["-2", "2", "-1/2", "1/2"],
-            answer: 2
-        },
-                        {
-            question: "Solve for x: 4x - 5 = 3x + 7",
-            options: ["x = 7", "x = 12", "x = -7", "x = -12"],
-            answer: 0
-        },
-        {
-            question: "What is the factored form of x² + 6x + 9?",
-            options: ["(x + 3)(x + 3)", "(x - 3)(x + 3)", "(x + 9)(x - 6)", "(x - 9)(x + 6)"],
-            answer: 0
-        },
-        {
-            question: "Which function represents a linear equation?",
-            options: ["y = 2x + 5", "y = x² - 3", "y = 3^x", "y = 1/x"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: x² - 16 = 0",
-            options: ["x = ±4", "x = 4", "x = -4", "x = 16"],
-            answer: 0
-        },
-        {
-            question: "Find the value of x in log₃(81) = x",
-            options: ["x = 3", "x = 4", "x = 5", "x = 6"],
-            answer: 1
-        },
-        {
-            question: "What is the equation of a line with slope 2 and y-intercept -3?",
-            options: ["y = 2x - 3", "y = -2x + 3", "y = 3x - 2", "y = -3x + 2"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 3x - 2 > 7",
-            options: ["x > 3", "x < 3", "x > -3", "x < -3"],
-            answer: 0
-        },
-        {
-            question: "Find the determinant of the matrix | 3 2 | | 5 4 |.",
-            options: ["-2", "2", "-7", "7"],
-            answer: 2
-        },
-        {
-            question: "What is the square root of 49?",
-            options: ["5", "6", "7", "8"],
-            answer: 2
-        },
-        {
-            question: "Solve for x: (x + 2)² = 25",
-            options: ["x = -7, 3", "x = -3, 7", "x = -5, 3", "x = -3, 5"],
-            answer: 1
-        },
-        {
-            question: "What is the x-intercept of the function y = -3x + 9?",
-            options: ["(3, 0)", "(0, 3)", "(-3, 0)", "(0, -3)"],
-            answer: 0
-        },
-        {
-            question: "Find the sum of the first 6 terms of the arithmetic sequence 2, 5, 8, 11, 14, 17.",
-            options: ["51", "54", "57", "60"],
-            answer: 2
-        },
-        {
-            question: "If f(x) = x³ + 2x - 5, what is f(2)?",
-            options: ["5", "7", "9", "11"],
-            answer: 2
-        },
-        {
-            question: "Which of the following is an irrational number?",
-            options: ["√3", "5", "3/4", "0.5"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 3^(x+1) = 27",
-            options: ["x = 1", "x = 2", "x = 3", "x = 4"],
-            answer: 1
-        },
-        {
-            question: "Which function represents an absolute value equation?",
-            options: ["f(x) = |x + 2|", "f(x) = x² - 5", "f(x) = 4x - 6", "f(x) = 3^x"],
-            answer: 0
-        },
-        {
-            question: "Find the range of f(x) = x² - 3.",
-            options: ["y ≥ -3", "y > -3", "y ≤ -3", "y < -3"],
-            answer: 0
-        },
-        {
-            question: "If x² - 25 = 0, what are the solutions for x?",
-            options: ["x = 5", "x = -5", "x = ±5", "x = 25"],
-            answer: 2
-        },
-        {
-            question: "What is the slope of the line 2x + 4y = 8?",
-            options: ["-1/2", "1/2", "-2", "2"],
-            answer: 0
-        },
-                        {
-            question: "Solve for x: 2(x + 3) = 4x - 6",
-            options: ["x = 3", "x = -3", "x = 6", "x = -6"],
-            answer: 1
-        },
-        {
-            question: "What is the factored form of x² - 5x - 14?",
-            options: ["(x - 7)(x + 2)", "(x - 2)(x + 7)", "(x - 5)(x + 14)", "(x - 14)(x + 5)"],
-            answer: 0
-        },
-        {
-            question: "Which function represents a cubic equation?",
-            options: ["f(x) = x³ - 2x", "f(x) = x² + 4", "f(x) = 3x + 1", "f(x) = 2^x"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 5x² - 20 = 0",
-            options: ["x = ±2", "x = ±4", "x = 5", "x = -5"],
-            answer: 1
-        },
-        {
-            question: "Find the value of x: log₄(64) = x",
-            options: ["x = 2", "x = 3", "x = 4", "x = 5"],
-            answer: 1
-        },
-        {
-            question: "What is the equation of a line passing through (2, 5) with slope -1?",
-            options: ["y = -x + 7", "y = x - 3", "y = -x + 3", "y = x + 7"],
-            answer: 0
-        },
-        {
-            question: "Solve the inequality: 3x + 1 < 10",
-            options: ["x < 3", "x > 3", "x < -3", "x > -3"],
-            answer: 0
-        },
-        {
-            question: "Find the determinant of the matrix | 1 4 | | 2 3 |.",
-            options: ["1", "-1", "5", "-5"],
-            answer: 3
-        },
-        {
-            question: "What is the cube root of 64?",
-            options: ["2", "3", "4", "5"],
-            answer: 2
-        },
-        {
-            question: "Solve for x: (x - 3)² = 9",
-            options: ["x = 0, 6", "x = -6, 0", "x = -3, 3", "x = 6, -6"],
-            answer: 0
-        },
-        {
-            question: "What is the x-intercept of the function y = 4x - 8?",
-            options: ["(2, 0)", "(0, 2)", "(-2, 0)", "(0, -2)"],
-            answer: 0
-        },
-        {
-            question: "Find the sum of the first 4 terms of the geometric sequence 3, 6, 12, 24.",
-            options: ["42", "45", "48", "51"],
-            answer: 2
-        },
-        {
-            question: "If f(x) = 2x³ - x + 4, what is f(1)?",
-            options: ["5", "6", "7", "8"],
-            answer: 0
-        },
-        {
-            question: "Which of the following is an irrational number?",
-            options: ["√5", "9", "1/3", "0.25"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 5^(x-1) = 25",
-            options: ["x = 1", "x = 2", "x = 3", "x = 4"],
-            answer: 2
-        },
-        {
-            question: "Which function represents a rational equation?",
-            options: ["f(x) = 1/(x - 2)", "f(x) = x² - 1", "f(x) = 3x + 5", "f(x) = 2^x"],
-            answer: 0
-        },
-        {
-            question: "Find the range of f(x) = -x² + 5.",
-            options: ["y ≤ 5", "y ≥ 5", "y > 5", "y < 5"],
-            answer: 0
-        },
-        {
-            question: "If x² - 49 = 0, what are the solutions for x?",
-            options: ["x = ±7", "x = 7", "x = -7", "x = 49"],
-            answer: 0
-        },
-        {
-            question: "What is the slope of the line 3x - y = 6?",
-            options: ["3", "-3", "1/3", "-1/3"],
-            answer: 0
-        },
-                        {
-            question: "Solve for x: 6x + 2 = 4x + 10",
-            options: ["x = 3", "x = 4", "x = 5", "x = 6"],
-            answer: 0
-        },
-        {
-            question: "What is the factored form of x² - 8x + 16?",
-            options: ["(x - 4)(x - 4)", "(x - 8)(x + 2)", "(x - 2)(x - 8)", "(x + 4)(x - 4)"],
-            answer: 0
-        },
-        {
-            question: "Which function represents a quadratic equation?",
-            options: ["f(x) = x² + 3x - 5", "f(x) = 4x + 2", "f(x) = 2^x", "f(x) = |x - 3|"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: x² - 49 = 0",
-            options: ["x = ±7", "x = 7", "x = -7", "x = 49"],
-            answer: 0
-        },
-        {
-            question: "Find the value of x: log₂(32) = x",
-            options: ["x = 4", "x = 5", "x = 6", "x = 7"],
-            answer: 1
-        },
-        {
-            question: "What is the equation of a line passing through (3, -2) with slope 4?",
-            options: ["y = 4x - 14", "y = -4x + 10", "y = 4x + 2", "y = -4x - 2"],
-            answer: 0
-        },
-        {
-            question: "Solve the inequality: 5x - 4 ≥ 11",
-            options: ["x ≥ 3", "x ≤ 3", "x > 3", "x < 3"],
-            answer: 0
-        },
-        {
-            question: "Find the determinant of the matrix | 2 3 | | 4 5 |.",
-            options: ["-2", "2", "-7", "7"],
-            answer: 2
-        },
-        {
-            question: "What is the cube root of 125?",
-            options: ["2", "3", "4", "5"],
-            answer: 3
-        },
-        {
-            question: "Solve for x: (x + 4)² = 16",
-            options: ["x = 0, -8", "x = -8, 0", "x = -4, 4", "x = 0, 8"],
-            answer: 2
-        },
-        {
-            question: "What is the x-intercept of the function y = -5x + 20?",
-            options: ["(4, 0)", "(0, 4)", "(-4, 0)", "(0, -4)"],
-            answer: 0
-        },
-        {
-            question: "Find the sum of the first 5 terms of the arithmetic sequence 1, 4, 7, 10, 13.",
-            options: ["30", "35", "40", "45"],
-            answer: 1
-        },
-        {
-            question: "If f(x) = x³ - 2x² + 4x - 3, what is f(2)?",
-            options: ["3", "5", "7", "9"],
-            answer: 1
-        },
-        {
-            question: "Which of the following is an irrational number?",
-            options: ["√7", "4", "2/5", "0.75"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 2^(x+1) = 16",
-            options: ["x = 1", "x = 2", "x = 3", "x = 4"],
-            answer: 2
-        },
-        {
-            question: "Which function represents a rational equation?",
-            options: ["f(x) = 1/(x + 3)", "f(x) = x² - 2", "f(x) = 5x - 1", "f(x) = 2^x"],
-            answer: 0
-        },
-        {
-            question: "Find the range of f(x) = -x² + 7.",
-            options: ["y ≤ 7", "y ≥ 7", "y > 7", "y < 7"],
-            answer: 0
-        },
-        {
-            question: "If x² - 36 = 0, what are the solutions for x?",
-            options: ["x = ±6", "x = 6", "x = -6", "x = 36"],
-            answer: 0
-        },
-        {
-            question: "What is the slope of the line 4x - y = 12?",
-            options: ["4", "-4", "1/4", "-1/4"],
-            answer: 0
-        },
-                        {
-            question: "Solve for x: 4(x - 2) = 2x + 6",
-            options: ["x = 5", "x = 6", "x = 7", "x = 8"],
-            answer: 0
-        },
-        {
-            question: "What is the factored form of x² - 10x + 25?",
-            options: ["(x - 5)(x - 5)", "(x - 10)(x + 5)", "(x - 2)(x - 5)", "(x + 5)(x + 5)"],
-            answer: 0
-        },
-        {
-            question: "Which of the following represents a linear function?",
-            options: ["y = 3x + 2", "y = x² - 4", "y = 2^x", "y = |x - 1|"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: x² - 64 = 0",
-            options: ["x = ±8", "x = 8", "x = -8", "x = 64"],
-            answer: 0
-        },
-        {
-            question: "Find the value of x: log₅(125) = x",
-            options: ["x = 2", "x = 3", "x = 4", "x = 5"],
-            answer: 1
-        },
-        {
-            question: "What is the equation of a line passing through (4, 7) with slope -2?",
-            options: ["y = -2x + 15", "y = 2x - 7", "y = -2x + 7", "y = 2x + 15"],
-            answer: 0
-        },
-        {
-            question: "Solve the inequality: 2x - 5 ≤ 9",
-            options: ["x ≤ 7", "x ≥ 7", "x < 7", "x > 7"],
-            answer: 0
-        },
-        {
-            question: "Find the determinant of the matrix | 3 2 | | 5 4 |.",
-            options: ["-2", "2", "-7", "7"],
-            answer: 2
-        },
-        {
-            question: "What is the cube root of 216?",
-            options: ["4", "5", "6", "7"],
-            answer: 2
-        },
-        {
-            question: "Solve for x: (x - 5)² = 25",
-            options: ["x = 0, 10", "x = -10, 0", "x = 0, 5", "x = 10, 0"],
-            answer: 0
-        },
-        {
-            question: "What is the x-intercept of the function y = 6x - 18?",
-            options: ["(3, 0)", "(0, 3)", "(-3, 0)", "(0, -3)"],
-            answer: 0
-        },
-        {
-            question: "Find the sum of the first 5 terms of the geometric sequence 2, 6, 18, 54, 162.",
-            options: ["242", "246", "250", "254"],
-            answer: 1
-        },
-        {
-            question: "If f(x) = 3x³ - x² + 5x - 2, what is f(1)?",
-            options: ["5", "6", "7", "8"],
-            answer: 1
-        },
-        {
-            question: "Which of the following is an irrational number?",
-            options: ["√11", "4", "3/7", "0.5"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 3^(x-2) = 27",
-            options: ["x = 2", "x = 3", "x = 4", "x = 5"],
-            answer: 2
-        },
-        {
-            question: "Which function represents a rational equation?",
-            options: ["f(x) = 1/(x - 4)", "f(x) = x² - 3", "f(x) = 4x - 7", "f(x) = 2^x"],
-            answer: 0
-        },
-        {
-            question: "Find the range of f(x) = -x² + 9.",
-            options: ["y ≤ 9", "y ≥ 9", "y > 9", "y < 9"],
-            answer: 0
-        },
-        {
-            question: "If x² - 81 = 0, what are the solutions for x?",
-            options: ["x = ±9", "x = 9", "x = -9", "x = 81"],
-            answer: 0
-        },
-        {
-            question: "What is the slope of the line 5x - y = 20?",
-            options: ["5", "-5", "1/5", "-1/5"],
-            answer: 0
-        },
-                        {
-            question: "Solve for x: 5x - 3 = 2x + 9",
-            options: ["x = 2", "x = 4", "x = 6", "x = 8"],
-            answer: 2
-        },
-        {
-            question: "What is the factored form of x² + 6x + 9?",
-            options: ["(x + 3)(x + 3)", "(x + 9)(x - 3)", "(x + 2)(x + 4)", "(x - 3)(x - 3)"],
-            answer: 0
-        },
-        {
-            question: "Which function represents an absolute value equation?",
-            options: ["y = |x - 4|", "y = x² + 2", "y = 2^x", "y = 5x - 1"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: x² - 25 = 0",
-            options: ["x = ±5", "x = 5", "x = -5", "x = 25"],
-            answer: 0
-        },
-        {
-            question: "Find the value of x: log₃(81) = x",
-            options: ["x = 2", "x = 3", "x = 4", "x = 5"],
-            answer: 2
-        },
-        {
-            question: "What is the equation of a line passing through (2, -3) with slope 3?",
-            options: ["y = 3x - 9", "y = -3x + 3", "y = 3x + 2", "y = -3x - 2"],
-            answer: 0
-        },
-        {
-            question: "Solve the inequality: 7x + 2 > 16",
-            options: ["x > 2", "x < 2", "x ≥ 2", "x ≤ 2"],
-            answer: 0
-        },
-        {
-            question: "Find the determinant of the matrix | 4 1 | | 2 3 |.",
-            options: ["10", "8", "6", "4"],
-            answer: 1
-        },
-        {
-            question: "What is the cube root of 343?",
-            options: ["5", "6", "7", "8"],
-            answer: 2
-        },
-        {
-            question: "Solve for x: (x + 6)² = 36",
-            options: ["x = 0, -12", "x = -12, 0", "x = 0, 6", "x = -12, 6"],
-            answer: 3
-        },
-        {
-            question: "What is the x-intercept of the function y = -4x + 12?",
-            options: ["(3, 0)", "(0, 3)", "(-3, 0)", "(0, -3)"],
-            answer: 0
-        },
-        {
-            question: "Find the sum of the first 4 terms of the arithmetic sequence 2, 5, 8, 11.",
-            options: ["20", "22", "24", "26"],
-            answer: 2
-        },
-        {
-            question: "If f(x) = x³ - 4x² + 2x - 5, what is f(2)?",
-            options: ["-3", "-2", "-1", "0"],
-            answer: 2
-        },
-        {
-            question: "Which of the following is an irrational number?",
-            options: ["√13", "9", "5/8", "0.4"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 4^(x+1) = 64",
-            options: ["x = 1", "x = 2", "x = 3", "x = 4"],
-            answer: 2
-        },
-        {
-            question: "Which function represents a quadratic equation?",
-            options: ["y = x² - 5x + 6", "y = x³ - 3x", "y = 3x - 1", "y = 2^x"],
-            answer: 0
-        },
-        {
-            question: "Find the range of f(x) = -x² + 5.",
-            options: ["y ≤ 5", "y ≥ 5", "y > 5", "y < 5"],
-            answer: 0
-        },
-        {
-            question: "If x² - 100 = 0, what are the solutions for x?",
-            options: ["x = ±10", "x = 10", "x = -10", "x = 100"],
-            answer: 0
-        },
-        {
-            question: "What is the slope of the line 3x - y = 9?",
-            options: ["3", "-3", "1/3", "-1/3"],
-            answer: 0
-        },
-                        {
-            question: "Solve for x: 2(x + 4) = 3x - 2",
-            options: ["x = 2", "x = 4", "x = 6", "x = 8"],
-            answer: 0
-        },
-        {
-            question: "What is the factored form of x² - 16?",
-            options: ["(x - 4)(x + 4)", "(x - 8)(x + 2)", "(x - 16)(x + 1)", "(x - 2)(x + 8)"],
-            answer: 0
-        },
-        {
-            question: "Which function represents an exponential growth?",
-            options: ["f(x) = 2^x", "f(x) = -x²", "f(x) = x + 3", "f(x) = |x - 2|"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: x² - 49 = 0",
-            options: ["x = ±7", "x = 7", "x = -7", "x = 49"],
-            answer: 0
-        },
-        {
-            question: "Find the value of x: log₂(32) = x",
-            options: ["x = 3", "x = 4", "x = 5", "x = 6"],
-            answer: 2
-        },
-        {
-            question: "What is the equation of a line passing through (1, -2) with slope 4?",
-            options: ["y = 4x - 6", "y = -4x + 6", "y = 4x + 2", "y = -4x - 2"],
-            answer: 0
-        },
-        {
-            question: "Solve the inequality: 3x - 7 ≤ 8",
-            options: ["x ≤ 5", "x ≥ 5", "x < 5", "x > 5"],
-            answer: 0
-        },
-        {
-            question: "Find the determinant of the matrix | 2 5 | | 7 1 |.",
-            options: ["-31", "31", "-9", "9"],
-            answer: 0
-        },
-        {
-            question: "What is the cube root of 512?",
-            options: ["6", "7", "8", "9"],
-            answer: 2
-        },
-        {
-            question: "Solve for x: (x - 3)² = 49",
-            options: ["x = -4, 10", "x = 4, -10", "x = 4, 10", "x = -4, -10"],
-            answer: 2
-        },
-        {
-            question: "What is the x-intercept of the function y = 2x - 10?",
-            options: ["(5, 0)", "(0, 5)", "(-5, 0)", "(0, -5)"],
-            answer: 0
-        },
-        {
-            question: "Find the sum of the first 6 terms of the geometric sequence 3, 6, 12, 24, 48, 96.",
-            options: ["189", "192", "195", "198"],
-            answer: 1
-        },
-        {
-            question: "If f(x) = x³ - 2x² + 3x - 4, what is f(2)?",
-            options: ["2", "3", "4", "5"],
-            answer: 2
-        },
-        {
-            question: "Which of the following is an irrational number?",
-            options: ["√7", "8", "3/4", "0.6"],
-            answer: 0
-        },
-        {
-            question: "Solve for x: 5^(x+1) = 125",
-            options: ["x = 1", "x = 2", "x = 3", "x = 4"],
-            answer: 1
-        },
-        {
-            question: "Which function represents a rational function?",
-            options: ["f(x) = 1/(x + 3)", "f(x) = x² - 4", "f(x) = 3x - 5", "f(x) = x³"],
-            answer: 0
-        },
-        {
-            question: "Find the range of f(x) = -x² + 4.",
-            options: ["y ≤ 4", "y ≥ 4", "y > 4", "y < 4"],
-            answer: 0
-        },
-        {
-            question: "If x² - 121 = 0, what are the solutions for x?",
-            options: ["x = ±11", "x = 11", "x = -11", "x = 121"],
-            answer: 0
-        },
-        {
-            question: "What is the slope of the line 2x - 3y = 6?",
-            options: ["2/3", "-2/3", "3/2", "-3/2"],
-            answer: 1
-        }
+                    question: "Solve: 3x - 7 = 2x + 5",
+                    options: ["x = 10", "x = 12", "x = 8", "x = 6"],
+                    correct: 1
+                }
             ],
             geometry: [
                 {
-                    question: "What is the formula for the area of a circle?",
-                    options: ["πr²", "2πr", "πd", "2πd"],
-                    correctAnswer: 0
+                    question: "What is the area of a circle with radius 5?",
+                    options: ["25π", "10π", "5π", "15π"],
+                    correct: 0
                 },
                 {
-    question: "In a right triangle, if one angle is 30°, what is another angle?",
-    options: ["60°", "45°", "30°", "90°"],
-    correctAnswer: 3 
-},
-                {
-                    question: "What is the sum of interior angles of a pentagon?",
-                    options: ["540°", "360°", "720°", "180°"],
-                    correctAnswer: 0
+                    question: "The sum of interior angles in a triangle is:",
+                    options: ["90°", "180°", "270°", "360°"],
+                    correct: 1
                 },
                 {
-                    question: "The Pythagorean theorem relates to which type of triangle?",
-                    options: ["Right triangle", "Equilateral triangle", "Isosceles triangle", "Scalene triangle"],
-                    correctAnswer: 0
+                    question: "What is the perimeter of a rectangle with length 8 and width 6?",
+                    options: ["14", "28", "48", "24"],
+                    correct: 1
                 },
                 {
-                    question: "What is the volume of a cube with side length 3?",
-                    options: ["27", "9", "6", "18"],
-                    correctAnswer: 0
+                    question: "The volume of a cube with side length 4 is:",
+                    options: ["16", "32", "48", "64"],
+                    correct: 3
                 },
                 {
-                    question: "Two angles that sum to 90° are called:",
-                    options: ["Complementary angles", "Supplementary angles", "Vertical angles", "Adjacent angles"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "What is the area of a triangle with base 8 and height 5?",
-                    options: ["20", "40", "13", "10"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "If a rectangle has length 12 and width 5, what is its perimeter?",
-                    options: ["34", "17", "60", "24"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "What is the formula for the circumference of a circle?",
-                    options: ["2πr", "πr²", "πd/2", "2πd"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "In similar triangles, corresponding sides are:",
-                    options: ["Proportional", "Equal", "Perpendicular", "Parallel"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "What is the measure of each interior angle in a regular hexagon?",
-                    options: ["120°", "60°", "108°", "135°"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "What is the surface area of a sphere with radius r?",
-                    options: ["4πr²", "πr²", "4/3πr³", "2πr"],
-                    correctAnswer: 0
-                },
-                        {
-            question: "What is the sum of the interior angles of a pentagon?",
-            options: ["360°", "540°", "720°", "900°"],
-            answer: 1
-        },
-        {
-            question: "What is the formula for the area of a triangle?",
-            options: ["1/2 × base × height", "base × height", "length × width", "πr²"],
-            answer: 0
-        },
-        {
-            question: "A right triangle has legs of 6 cm and 8 cm. What is the length of the hypotenuse?",
-            options: ["10 cm", "12 cm", "14 cm", "16 cm"],
-            answer: 0
-        },
-        {
-            question: "How many lines of symmetry does a regular hexagon have?",
-            options: ["3", "4", "5", "6"],
-            answer: 3
-        },
-        {
-            question: "Which type of triangle has all three sides of different lengths?",
-            options: ["Equilateral", "Isosceles", "Scalene", "Right"],
-            answer: 2
-        },
-        {
-            question: "What is the measure of each interior angle in a regular octagon?",
-            options: ["120°", "135°", "150°", "160°"],
-            answer: 1
-        },
-        {
-            question: "Which of the following is a property of a parallelogram?",
-            options: ["Diagonals are equal", "All angles are 90°", "Opposite sides are parallel and equal", "Has exactly one pair of parallel sides"],
-            answer: 2
-        },
-        {
-            question: "What is the volume of a cylinder with a radius of 3 cm and height of 5 cm? (Use π ≈ 3.14)",
-            options: ["141.3 cm³", "150 cm³", "157 cm³", "170 cm³"],
-            answer: 0
-        },
-        {
-            question: "A square has a perimeter of 48 cm. What is the length of one side?",
-            options: ["10 cm", "12 cm", "14 cm", "16 cm"],
-            answer: 1
-        },
-        {
-            question: "The sum of two complementary angles is:",
-            options: ["90°", "180°", "270°", "360°"],
-            answer: 0
-        },
-        {
-            question: "Which of the following is NOT a type of quadrilateral?",
-            options: ["Rectangle", "Trapezium", "Hexagon", "Rhombus"],
-            answer: 2
-        },
-        {
-            question: "What is the name of a triangle that has one angle greater than 90°?",
-            options: ["Right triangle", "Acute triangle", "Obtuse triangle", "Equilateral triangle"],
-            answer: 2
-        },
-        {
-            question: "A circle has a diameter of 14 cm. What is its radius?",
-            options: ["5 cm", "6 cm", "7 cm", "8 cm"],
-            answer: 2
-        },
-        {
-            question: "What is the sum of the exterior angles of any polygon?",
-            options: ["180°", "270°", "360°", "450°"],
-            answer: 2
-        },
-        {
-            question: "Which transformation does NOT change the size of a shape?",
-            options: ["Translation", "Dilation", "Reflection", "Rotation"],
-            answer: 0
-        },
-        {
-            question: "The diagonals of a rectangle:",
-            options: ["Are perpendicular", "Are equal in length", "Bisect the angles", "Have different lengths"],
-            answer: 1
-        },
-        {
-            question: "What is the area of a circle with a radius of 4 cm? (Use π ≈ 3.14)",
-            options: ["25.12 cm²", "37.68 cm²", "50.24 cm²", "75.36 cm²"],
-            answer: 2
-        },
-        {
-            question: "A cone has a radius of 5 cm and height of 12 cm. What is its volume? (Use π ≈ 3.14)",
-            options: ["100.48 cm³", "125.6 cm³", "157 cm³", "314 cm³"],
-            answer: 1
-        },
-        {
-            question: "Which formula is used to calculate the circumference of a circle?",
-            options: ["πr²", "2πr", "πd²", "l × w"],
-            answer: 1
-        },
-        {
-            question: "What type of angle is greater than 90° but less than 180°?",
-            options: ["Acute", "Right", "Obtuse", "Straight"],
-            answer: 2
-        },
-                        {
-            question: "What is the perimeter of a rectangle with length 8 cm and width 5 cm?",
-            options: ["26 cm", "30 cm", "35 cm", "40 cm"],
-            answer: 0
-        },
-        {
-            question: "Which 3D shape has exactly one circular base and a curved surface?",
-            options: ["Cylinder", "Sphere", "Cone", "Pyramid"],
-            answer: 2
-        },
-        {
-            question: "What is the measure of one exterior angle of a regular hexagon?",
-            options: ["45°", "60°", "72°", "120°"],
-            answer: 1
-        },
-        {
-            question: "The longest side of a right triangle is called:",
-            options: ["Base", "Leg", "Hypotenuse", "Altitude"],
-            answer: 2
-        },
-        {
-            question: "A square has a diagonal of 10 cm. What is the length of one side? (Use Pythagoras' theorem)",
-            options: ["5 cm", "7.07 cm", "8 cm", "9 cm"],
-            answer: 1
-        },
-        {
-            question: "How many faces does a rectangular prism have?",
-            options: ["4", "5", "6", "8"],
-            answer: 2
-        },
-        {
-            question: "Which of the following is NOT a type of transformation?",
-            options: ["Rotation", "Dilation", "Reflection", "Intersection"],
-            answer: 3
-        },
-        {
-            question: "The diagonals of a rhombus always:",
-            options: ["Are equal", "Are perpendicular", "Are parallel", "Have the same length"],
-            answer: 1
-        },
-        {
-            question: "A triangle with two equal sides is called:",
-            options: ["Scalene", "Isosceles", "Equilateral", "Right"],
-            answer: 1
-        },
-        {
-            question: "What is the volume of a cube with a side length of 4 cm?",
-            options: ["16 cm³", "32 cm³", "48 cm³", "64 cm³"],
-            answer: 3
-        },
-        {
-            question: "If a parallelogram has one angle measuring 70°, what is the measure of its opposite angle?",
-            options: ["70°", "80°", "90°", "110°"],
-            answer: 0
-        },
-        {
-            question: "What is the name of a polygon with ten sides?",
-            options: ["Heptagon", "Nonagon", "Decagon", "Dodecagon"],
-            answer: 2
-        },
-        {
-            question: "The sum of the three angles in any triangle is always:",
-            options: ["90°", "120°", "180°", "360°"],
-            answer: 2
-        },
-        {
-            question: "Which formula is used to calculate the area of a parallelogram?",
-            options: ["Base × Height", "1/2 × Base × Height", "πr²", "Side³"],
-            answer: 0
-        },
-        {
-            question: "How many edges does a cube have?",
-            options: ["6", "8", "10", "12"],
-            answer: 3
-        },
-        {
-            question: "What is the distance across a circle through its center called?",
-            options: ["Radius", "Diameter", "Chord", "Circumference"],
-            answer: 1
-        },
-        {
-            question: "Which shape has exactly one pair of parallel sides?",
-            options: ["Square", "Rectangle", "Trapezium", "Rhombus"],
-            answer: 2
-        },
-        {
-            question: "A right triangle has an angle of 30°. What is the measure of the other non-right angle?",
-            options: ["30°", "45°", "60°", "75°"],
-            answer: 2
-        },
-        {
-            question: "The formula for the surface area of a sphere is:",
-            options: ["4πr²", "2πr", "πr²", "πd²"],
-            answer: 0
-        },
-        {
-            question: "If a circle has a circumference of 31.4 cm, what is its approximate diameter? (Use π ≈ 3.14)",
-            options: ["5 cm", "7 cm", "10 cm", "15 cm"],
-            answer: 2
-        },
-                        {
-            question: "What is the name of a polygon with 12 sides?",
-            options: ["Decagon", "Dodecagon", "Hexagon", "Octagon"],
-            answer: 1
-        },
-        {
-            question: "A triangle with all angles less than 90° is called:",
-            options: ["Acute", "Right", "Obtuse", "Scalene"],
-            answer: 0
-        },
-        {
-            question: "What is the area of a rectangle with length 9 cm and width 4 cm?",
-            options: ["32 cm²", "35 cm²", "36 cm²", "40 cm²"],
-            answer: 2
-        },
-        {
-            question: "Which 3D shape has two parallel circular bases?",
-            options: ["Cone", "Cylinder", "Sphere", "Pyramid"],
-            answer: 1
-        },
-        {
-            question: "What is the measure of each interior angle of a regular pentagon?",
-            options: ["90°", "108°", "120°", "135°"],
-            answer: 1
-        },
-        {
-            question: "A sphere has a radius of 5 cm. What is its volume? (Use π ≈ 3.14, formula: 4/3 πr³)",
-            options: ["418.67 cm³", "523.33 cm³", "615.75 cm³", "725.41 cm³"],
-            answer: 0
-        },
-        {
-            question: "What is the sum of the interior angles of a heptagon?",
-            options: ["540°", "720°", "900°", "1260°"],
-            answer: 1
-        },
-        {
-            question: "A quadrilateral with only one pair of parallel sides is called a:",
-            options: ["Rectangle", "Rhombus", "Trapezium", "Square"],
-            answer: 2
-        },
-        {
-            question: "How many vertices does a rectangular prism have?",
-            options: ["6", "8", "10", "12"],
-            answer: 1
-        },
-        {
-            question: "What is the perimeter of an equilateral triangle with side length 7 cm?",
-            options: ["14 cm", "21 cm", "28 cm", "35 cm"],
-            answer: 1
-        },
-        {
-            question: "If a regular octagon has a perimeter of 64 cm, what is the length of each side?",
-            options: ["6 cm", "7 cm", "8 cm", "9 cm"],
-            answer: 2
-        },
-        {
-            question: "Which shape has rotational symmetry of order 4?",
-            options: ["Rectangle", "Rhombus", "Square", "Trapezium"],
-            answer: 2
-        },
-        {
-            question: "A cone has a height of 12 cm and a base radius of 3 cm. What is its volume? (Use π ≈ 3.14, formula: 1/3 πr²h)",
-            options: ["37.68 cm³", "113.04 cm³", "150.72 cm³", "169.56 cm³"],
-            answer: 1
-        },
-        {
-            question: "How many diagonals does a hexagon have?",
-            options: ["6", "9", "12", "15"],
-            answer: 1
-        },
-        {
-            question: "Which of the following quadrilaterals has diagonals that bisect each other at right angles?",
-            options: ["Rectangle", "Rhombus", "Trapezium", "Parallelogram"],
-            answer: 1
-        },
-        {
-            question: "If a circle has a radius of 10 cm, what is its area? (Use π ≈ 3.14)",
-            options: ["31.4 cm²", "62.8 cm²", "78.5 cm²", "314 cm²"],
-            answer: 3
-        },
-        {
-            question: "What is the measure of an exterior angle of a regular decagon?",
-            options: ["30°", "36°", "40°", "45°"],
-            answer: 2
-        },
-        {
-            question: "Which theorem states that the sum of the squares of the two shorter sides of a right triangle equals the square of the hypotenuse?",
-            options: ["Thales' Theorem", "Pythagorean Theorem", "Midpoint Theorem", "Ceva's Theorem"],
-            answer: 1
-        },
-        {
-            question: "Which shape has exactly five lines of symmetry?",
-            options: ["Pentagon", "Hexagon", "Octagon", "Triangle"],
-            answer: 0
-        },
-        {
-            question: "What is the surface area of a cube with a side length of 6 cm?",
-            options: ["72 cm²", "108 cm²", "144 cm²", "216 cm²"],
-            answer: 3
-        },
-                        {
-            question: "Which type of angle measures exactly 90°?",
-            options: ["Acute", "Right", "Obtuse", "Reflex"],
-            answer: 1
-        },
-        {
-            question: "What is the sum of the exterior angles of a nonagon?",
-            options: ["180°", "270°", "360°", "450°"],
-            answer: 2
-        },
-        {
-            question: "A parallelogram has angles measuring 120° and 60°. What is the measure of the remaining two angles?",
-            options: ["60° and 60°", "90° and 90°", "120° and 60°", "150° and 30°"],
-            answer: 2
-        },
-        {
-            question: "What is the formula for the lateral surface area of a cylinder?",
-            options: ["2πr²", "πr²h", "2πrh", "4/3πr³"],
-            answer: 2
-        },
-        {
-            question: "Which of these transformations changes the size of a shape?",
-            options: ["Reflection", "Rotation", "Translation", "Dilation"],
-            answer: 3
-        },
-        {
-            question: "How many degrees are there in a straight angle?",
-            options: ["45°", "90°", "180°", "360°"],
-            answer: 2
-        },
-        {
-            question: "A regular heptagon has a perimeter of 56 cm. What is the length of one side?",
-            options: ["6 cm", "7 cm", "8 cm", "9 cm"],
-            answer: 1
-        },
-        {
-            question: "Which shape has diagonals that are equal and bisect each other but do not meet at right angles?",
-            options: ["Square", "Rhombus", "Rectangle", "Kite"],
-            answer: 2
-        },
-        {
-            question: "What is the formula for the total surface area of a sphere?",
-            options: ["2πr²", "3πr²", "4πr²", "6πr²"],
-            answer: 2
-        },
-        {
-            question: "A triangle has angles of 35° and 65°. What is the measure of the third angle?",
-            options: ["70°", "80°", "85°", "90°"],
-            answer: 0
-        },
-        {
-            question: "Which of these quadrilaterals always has at least one pair of parallel sides?",
-            options: ["Trapezium", "Kite", "Parallelogram", "Pentagon"],
-            answer: 0
-        },
-        {
-            question: "What is the name of the longest chord in a circle?",
-            options: ["Radius", "Diameter", "Tangent", "Secant"],
-            answer: 1
-        },
-        {
-            question: "Which of these 3D shapes has only one vertex?",
-            options: ["Cylinder", "Sphere", "Cone", "Prism"],
-            answer: 2
-        },
-        {
-            question: "The measure of an exterior angle of a regular hexagon is:",
-            options: ["45°", "60°", "72°", "120°"],
-            answer: 1
-        },
-        {
-            question: "Which of these shapes does not have rotational symmetry?",
-            options: ["Square", "Rectangle", "Scalene triangle", "Rhombus"],
-            answer: 2
-        },
-        {
-            question: "If a square has an area of 64 cm², what is its perimeter?",
-            options: ["16 cm", "24 cm", "32 cm", "40 cm"],
-            answer: 2
-        },
-        {
-            question: "A sector of a circle has a central angle of 90° and a radius of 8 cm. What is the area of the sector? (Use π ≈ 3.14, formula: (θ/360)πr²)",
-            options: ["12.56 cm²", "25.12 cm²", "50.24 cm²", "100.48 cm²"],
-            answer: 2
-        },
-        {
-            question: "Which quadrilateral has diagonals that are equal and perpendicular?",
-            options: ["Rectangle", "Rhombus", "Square", "Trapezium"],
-            answer: 2
-        },
-        {
-            question: "How many faces does a triangular prism have?",
-            options: ["4", "5", "6", "7"],
-            answer: 2
-        },
-        {
-            question: "A regular octagon has a total of how many diagonals?",
-            options: ["12", "16", "20", "24"],
-            answer: 2
-        },
-                        {
-            question: "What is the measure of each interior angle of a regular hexagon?",
-            options: ["100°", "110°", "120°", "130°"],
-            answer: 2
-        },
-        {
-            question: "A square pyramid has how many faces?",
-            options: ["4", "5", "6", "8"],
-            answer: 1
-        },
-        {
-            question: "The diagonals of a rectangle:",
-            options: ["Are always equal", "Are always perpendicular", "Always bisect at right angles", "Are never equal"],
-            answer: 0
-        },
-        {
-            question: "What is the formula for the circumference of a circle?",
-            options: ["2πr", "πr²", "4/3πr³", "πd"],
-            answer: 3
-        },
-        {
-            question: "If a cube has a volume of 64 cm³, what is the length of each side?",
-            options: ["2 cm", "4 cm", "6 cm", "8 cm"],
-            answer: 1
-        },
-        {
-            question: "Which quadrilateral has four equal sides but no right angles?",
-            options: ["Rectangle", "Square", "Trapezium", "Rhombus"],
-            answer: 3
-        },
-        {
-            question: "A regular pentagon has how many lines of symmetry?",
-            options: ["2", "3", "5", "6"],
-            answer: 2
-        },
-        {
-            question: "What is the area of a triangle with base 10 cm and height 6 cm?",
-            options: ["20 cm²", "30 cm²", "40 cm²", "50 cm²"],
-            answer: 1
-        },
-        {
-            question: "A right-angled triangle has one angle measuring 30°. What is the measure of the other non-right angle?",
-            options: ["30°", "45°", "60°", "75°"],
-            answer: 2
-        },
-        {
-            question: "What is the surface area of a cube with a side length of 5 cm?",
-            options: ["75 cm²", "100 cm²", "125 cm²", "150 cm²"],
-            answer: 2
-        },
-        {
-            question: "How many diagonals does a regular pentagon have?",
-            options: ["2", "5", "7", "10"],
-            answer: 1
-        },
-        {
-            question: "A square has a diagonal of 10 cm. What is the length of one side?",
-            options: ["5 cm", "7.07 cm", "8 cm", "9 cm"],
-            answer: 1
-        },
-        {
-            question: "Which transformation flips a shape over a line?",
-            options: ["Rotation", "Reflection", "Translation", "Dilation"],
-            answer: 1
-        },
-        {
-            question: "What is the name of a 7-sided polygon?",
-            options: ["Pentagon", "Hexagon", "Heptagon", "Octagon"],
-            answer: 2
-        },
-        {
-            question: "A quadrilateral with two pairs of adjacent equal sides is called:",
-            options: ["Trapezium", "Parallelogram", "Kite", "Rhombus"],
-            answer: 2
-        },
-        {
-            question: "How many edges does a triangular prism have?",
-            options: ["6", "9", "12", "15"],
-            answer: 1
-        },
-        {
-            question: "If a triangle has sides 3 cm, 4 cm, and 5 cm, what type of triangle is it?",
-            options: ["Equilateral", "Isosceles", "Right", "Scalene"],
-            answer: 2
-        },
-        {
-            question: "A cylinder has a height of 10 cm and a radius of 4 cm. What is its volume? (Use π ≈ 3.14, formula: πr²h)",
-            options: ["314 cm³", "400 cm³", "502.4 cm³", "628 cm³"],
-            answer: 0
-        },
-        {
-            question: "Which quadrilateral has only one pair of parallel sides?",
-            options: ["Rectangle", "Rhombus", "Trapezium", "Square"],
-            answer: 2
-        },
-        {
-            question: "The sum of the exterior angles of any polygon is always:",
-            options: ["180°", "270°", "360°", "450°"],
-            answer: 2
-        },
-                        {
-            question: "What is the sum of the interior angles of a decagon?",
-            options: ["1080°", "1200°", "1440°", "1800°"],
-            answer: 0
-        },
-        {
-            question: "Which type of triangle has all three sides of different lengths?",
-            options: ["Equilateral", "Isosceles", "Scalene", "Right"],
-            answer: 2
-        },
-        {
-            question: "A cube has how many edges?",
-            options: ["8", "10", "12", "14"],
-            answer: 2
-        },
-        {
-            question: "If a parallelogram has one angle of 70°, what is the measure of its opposite angle?",
-            options: ["70°", "90°", "110°", "140°"],
-            answer: 0
-        },
-        {
-            question: "What is the length of the hypotenuse of a right triangle with legs of length 6 cm and 8 cm?",
-            options: ["10 cm", "12 cm", "14 cm", "16 cm"],
-            answer: 0
-        },
-        {
-            question: "What is the formula for the volume of a cone?",
-            options: ["1/3πr²h", "πr²h", "4/3πr³", "2πr²h"],
-            answer: 0
-        },
-        {
-            question: "Which quadrilateral has opposite sides that are equal and parallel but does not have all right angles?",
-            options: ["Rectangle", "Square", "Trapezium", "Rhombus"],
-            answer: 3
-        },
-        {
-            question: "How many faces does a pentagonal prism have?",
-            options: ["5", "6", "7", "8"],
-            answer: 2
-        },
-        {
-            question: "What is the exterior angle of a regular octagon?",
-            options: ["30°", "36°", "45°", "60°"],
-            answer: 2
-        },
-        {
-            question: "A sector of a circle has a central angle of 60° and a radius of 9 cm. What is its area? (Use π ≈ 3.14, formula: (θ/360)πr²)",
-            options: ["21.2 cm²", "28.3 cm²", "42.4 cm²", "50.6 cm²"],
-            answer: 2
-        },
-        {
-            question: "A triangle with two equal sides and one different side is called:",
-            options: ["Equilateral", "Isosceles", "Scalene", "Right"],
-            answer: 1
-        },
-        {
-            question: "How many vertices does a hexagonal pyramid have?",
-            options: ["6", "7", "8", "9"],
-            answer: 1
-        },
-        {
-            question: "If a square has a perimeter of 48 cm, what is the length of one side?",
-            options: ["10 cm", "12 cm", "14 cm", "16 cm"],
-            answer: 1
-        },
-        {
-            question: "Which transformation turns a shape around a fixed point?",
-            options: ["Reflection", "Translation", "Rotation", "Dilation"],
-            answer: 2
-        },
-        {
-            question: "What is the name of a polygon with 20 sides?",
-            options: ["Decagon", "Dodecagon", "Icosagon", "Hexadecagon"],
-            answer: 2
-        },
-        {
-            question: "What is the lateral surface area of a cube with side length 5 cm?",
-            options: ["50 cm²", "100 cm²", "150 cm²", "200 cm²"],
-            answer: 2
-        },
-        {
-            question: "A cylinder has a radius of 5 cm and a height of 10 cm. What is its surface area? (Use π ≈ 3.14, formula: 2πr² + 2πrh)",
-            options: ["251.2 cm²", "314 cm²", "471 cm²", "628 cm²"],
-            answer: 2
-        },
-        {
-            question: "How many lines of symmetry does a regular hexagon have?",
-            options: ["3", "4", "5", "6"],
-            answer: 3
-        },
-        {
-            question: "If the sum of two angles in a triangle is 130°, what is the measure of the third angle?",
-            options: ["40°", "50°", "60°", "70°"],
-            answer: 1
-        },
-                        {
-            question: "What is the sum of the interior angles of a heptagon?",
-            options: ["720°", "900°", "1080°", "1260°"],
-            answer: 1
-        },
-        {
-            question: "Which of the following is a property of all parallelograms?",
-            options: ["All sides are equal", "Diagonals bisect each other", "All angles are right angles", "Diagonals are perpendicular"],
-            answer: 1
-        },
-        {
-            question: "What is the area of a trapezium with bases of 8 cm and 12 cm and a height of 5 cm?",
-            options: ["40 cm²", "50 cm²", "60 cm²", "70 cm²"],
-            answer: 1
-        },
-        {
-            question: "A regular polygon has an interior angle of 144°. How many sides does it have?",
-            options: ["8", "9", "10", "12"],
-            answer: 2
-        },
-        {
-            question: "Which shape has exactly one line of symmetry?",
-            options: ["Scalene triangle", "Kite", "Rectangle", "Pentagon"],
-            answer: 1
-        },
-        {
-            question: "A cone has a base radius of 7 cm and a height of 24 cm. What is its slant height?",
-            options: ["25 cm", "26 cm", "27 cm", "28 cm"],
-            answer: 0
-        },
-        {
-            question: "How many edges does an octahedron have?",
-            options: ["8", "10", "12", "14"],
-            answer: 2
-        },
-        {
-            question: "What is the formula for the area of a parallelogram?",
-            options: ["base × height", "½(base × height)", "side²", "πr²"],
-            answer: 0
-        },
-        {
-            question: "A regular hexagon is divided into how many equilateral triangles?",
-            options: ["4", "5", "6", "8"],
-            answer: 2
-        },
-        {
-            question: "A sphere has a radius of 5 cm. What is its volume? (Use π ≈ 3.14, formula: 4/3πr³)",
-            options: ["261.7 cm³", "314 cm³", "523.3 cm³", "628 cm³"],
-            answer: 2
-        },
-        {
-            question: "Which of the following quadrilaterals has diagonals that bisect each other at right angles?",
-            options: ["Rectangle", "Parallelogram", "Rhombus", "Trapezium"],
-            answer: 2
-        },
-        {
-            question: "A square and a rhombus both have:",
-            options: ["Equal diagonals", "Four equal sides", "Four right angles", "Exactly one pair of parallel sides"],
-            answer: 1
-        },
-        {
-            question: "How many faces does a rectangular prism have?",
-            options: ["4", "5", "6", "8"],
-            answer: 2
-        },
-        {
-            question: "The diagonals of a rhombus are 12 cm and 16 cm. What is its area?",
-            options: ["48 cm²", "72 cm²", "96 cm²", "128 cm²"],
-            answer: 2
-        },
-        {
-            question: "What is the measure of each exterior angle of a regular decagon?",
-            options: ["30°", "36°", "40°", "45°"],
-            answer: 2
-        },
-        {
-            question: "A shape has rotational symmetry of order 4. What does this mean?",
-            options: ["It can be rotated 90° and look the same", "It has 4 lines of symmetry", "It has 4 sides", "It is a square"],
-            answer: 0
-        },
-        {
-            question: "The sum of two complementary angles is:",
-            options: ["90°", "180°", "270°", "360°"],
-            answer: 0
-        },
-        {
-            question: "What is the length of the diagonal of a square with side length 10 cm?",
-            options: ["10 cm", "12 cm", "14.14 cm", "16 cm"],
-            answer: 2
-        },
-        {
-            question: "Which of the following is true for a regular polygon?",
-            options: ["All sides and angles are equal", "All sides are equal, but angles are different", "Only opposite sides are equal", "Only adjacent angles are equal"],
-            answer: 0
-        },
-                        {
-            question: "What is the sum of the exterior angles of any polygon?",
-            options: ["180°", "270°", "360°", "540°"],
-            answer: 2
-        },
-        {
-            question: "Which type of triangle has exactly two equal sides?",
-            options: ["Scalene", "Isosceles", "Equilateral", "Right"],
-            answer: 1
-        },
-        {
-            question: "How many lines of symmetry does a regular pentagon have?",
-            options: ["3", "4", "5", "6"],
-            answer: 2
-        },
-        {
-            question: "If a square has a diagonal of 14 cm, what is the length of one side? (Use Pythagoras' theorem)",
-            options: ["7 cm", "9 cm", "10 cm", "14 cm"],
-            answer: 2
-        },
-        {
-            question: "A rhombus has diagonals measuring 8 cm and 10 cm. What is its area?",
-            options: ["20 cm²", "30 cm²", "40 cm²", "50 cm²"],
-            answer: 2
-        },
-        {
-            question: "Which transformation changes the size of a shape but keeps its proportions the same?",
-            options: ["Translation", "Reflection", "Dilation", "Rotation"],
-            answer: 2
-        },
-        {
-            question: "A triangle has angles measuring 35° and 65°. What is the measure of the third angle?",
-            options: ["75°", "80°", "85°", "90°"],
-            answer: 1
-        },
-        {
-            question: "What is the volume of a rectangular prism with dimensions 4 cm × 5 cm × 10 cm?",
-            options: ["150 cm³", "200 cm³", "250 cm³", "300 cm³"],
-            answer: 1
-        },
-        {
-            question: "How many edges does a triangular prism have?",
-            options: ["5", "6", "9", "12"],
-            answer: 2
-        },
-        {
-            question: "Which of the following has exactly one pair of parallel sides?",
-            options: ["Rectangle", "Square", "Parallelogram", "Trapezium"],
-            answer: 3
-        },
-        {
-            question: "A cube has a total surface area of 150 cm². What is the length of one side?",
-            options: ["3 cm", "4 cm", "5 cm", "6 cm"],
-            answer: 2
-        },
-        {
-            question: "The perimeter of a regular hexagon is 36 cm. What is the length of one side?",
-            options: ["4 cm", "5 cm", "6 cm", "7 cm"],
-            answer: 2
-        },
-        {
-            question: "A cylinder has a height of 7 cm and a radius of 3 cm. What is its volume? (Use π ≈ 3.14, formula: πr²h)",
-            options: ["138.6 cm³", "157.1 cm³", "192.5 cm³", "225.2 cm³"],
-            answer: 0
-        },
-        {
-            question: "What is the measure of each interior angle in a regular octagon?",
-            options: ["108°", "120°", "135°", "150°"],
-            answer: 2
-        },
-        {
-            question: "How many faces does a pentagonal pyramid have?",
-            options: ["5", "6", "7", "8"],
-            answer: 2
-        },
-        {
-            question: "A circle has a diameter of 20 cm. What is its circumference? (Use π ≈ 3.14, formula: C = πd)",
-            options: ["31.4 cm", "47.1 cm", "56.4 cm", "62.8 cm"],
-            answer: 3
-        },
-        {
-            question: "What is the area of a sector with a central angle of 90° and a radius of 6 cm? (Use π ≈ 3.14, formula: (θ/360)πr²)",
-            options: ["7.07 cm²", "14.13 cm²", "28.27 cm²", "56.55 cm²"],
-            answer: 2
-        },
-        {
-            question: "A right-angled triangle has a base of 9 cm and a height of 12 cm. What is its hypotenuse?",
-            options: ["10 cm", "13 cm", "15 cm", "17 cm"],
-            answer: 2
-        },
-        {
-            question: "Which of the following 3D shapes has only one vertex?",
-            options: ["Cube", "Cone", "Cylinder", "Sphere"],
-            answer: 1
-        },
-                        {
-            question: "How many diagonals does a hexagon have?",
-            options: ["6", "9", "12", "15"],
-            answer: 1
-        },
-        {
-            question: "Which type of quadrilateral has four equal sides but no right angles?",
-            options: ["Rectangle", "Parallelogram", "Rhombus", "Trapezium"],
-            answer: 2
-        },
-        {
-            question: "A right triangle has a hypotenuse of 13 cm and one leg of 5 cm. What is the length of the other leg?",
-            options: ["8 cm", "10 cm", "12 cm", "14 cm"],
-            answer: 0
-        },
-        {
-            question: "What is the total number of degrees in the sum of interior angles of a dodecagon (12-sided polygon)?",
-            options: ["1440°", "1620°", "1800°", "1980°"],
-            answer: 1
-        },
-        {
-            question: "How many edges does a rectangular pyramid have?",
-            options: ["5", "8", "10", "12"],
-            answer: 2
-        },
-        {
-            question: "A rectangle has a length of 12 cm and a width of 5 cm. What is its diagonal length?",
-            options: ["10 cm", "12 cm", "13 cm", "15 cm"],
-            answer: 2
-        },
-        {
-            question: "A regular polygon has an exterior angle of 30°. How many sides does it have?",
-            options: ["10", "12", "15", "18"],
-            answer: 1
-        },
-        {
-            question: "Which shape has exactly four lines of symmetry?",
-            options: ["Square", "Rectangle", "Rhombus", "Kite"],
-            answer: 0
-        },
-        {
-            question: "What is the formula for the surface area of a sphere?",
-            options: ["4πr²", "πr²h", "2πrh", "4/3πr³"],
-            answer: 0
-        },
-        {
-            question: "A triangle has sides of lengths 6 cm, 8 cm, and 10 cm. What type of triangle is this?",
-            options: ["Equilateral", "Scalene", "Isosceles", "Right"],
-            answer: 3
-        },
-        {
-            question: "How many faces does a hexagonal prism have?",
-            options: ["6", "8", "10", "12"],
-            answer: 2
-        },
-        {
-            question: "The diagonals of a square are 10 cm long. What is the area of the square?",
-            options: ["25 cm²", "50 cm²", "75 cm²", "100 cm²"],
-            answer: 1
-        },
-        {
-            question: "What is the perimeter of a regular pentagon with a side length of 7 cm?",
-            options: ["28 cm", "30 cm", "32 cm", "35 cm"],
-            answer: 3
-        },
-        {
-            question: "Which transformation flips a shape over a line?",
-            options: ["Translation", "Reflection", "Rotation", "Dilation"],
-            answer: 1
-        },
-        {
-            question: "What is the name of a quadrilateral with one pair of parallel sides?",
-            options: ["Rhombus", "Trapezium", "Kite", "Parallelogram"],
-            answer: 1
-        },
-        {
-            question: "A circle has an area of 314 cm². What is its radius? (Use π ≈ 3.14, formula: A = πr²)",
-            options: ["8 cm", "9 cm", "10 cm", "11 cm"],
-            answer: 2
-        },
-        {
-            question: "How many lines of symmetry does a regular octagon have?",
-            options: ["4", "6", "8", "10"],
-            answer: 2
-        },
-        {
-            question: "A sphere has a diameter of 18 cm. What is its volume? (Use π ≈ 3.14, formula: V = 4/3πr³)",
-            options: ["3053.6 cm³", "3817.5 cm³", "4860.8 cm³", "5428.2 cm³"],
-            answer: 1
-        },
-        {
-            question: "What is the exterior angle of a regular hexagon?",
-            options: ["45°", "60°", "72°", "90°"],
-            answer: 1
-        },
-        {
-            question: "A rectangle is enlarged by a scale factor of 3. How does its area change?",
-            options: ["Increases by 3 times", "Increases by 6 times", "Increases by 9 times", "Stays the same"],
-            answer: 2
-        },
-                        {
-            question: "What is the volume of a cone with a radius of 4 cm and a height of 9 cm? (Use π ≈ 3.14, formula: V = 1/3πr²h)",
-            options: ["75.4 cm³", "100.5 cm³", "120.7 cm³", "150.8 cm³"],
-            answer: 0
-        },
-        {
-            question: "How many sides does a regular decagon have?",
-            options: ["8", "9", "10", "12"],
-            answer: 2
-        },
-        {
-            question: "What is the formula for the area of a rhombus?",
-            options: ["base × height", "½ × diagonal₁ × diagonal₂", "side × height", "πr²"],
-            answer: 1
-        },
-        {
-            question: "What is the measure of each interior angle of a regular 20-sided polygon?",
-            options: ["162°", "170°", "172°", "180°"],
-            answer: 0
-        },
-        {
-            question: "How many faces does a cube have?",
-            options: ["4", "5", "6", "8"],
-            answer: 2
-        },
-        {
-            question: "Which of the following shapes is a type of polyhedron?",
-            options: ["Sphere", "Cylinder", "Cone", "Pyramid"],
-            answer: 3
-        },
-        {
-            question: "The diagonals of a rectangle are 15 cm and 20 cm. What is the area of the rectangle?",
-            options: ["100 cm²", "200 cm²", "225 cm²", "300 cm²"],
-            answer: 1
-        },
-        {
-            question: "Which of the following is true about a regular hexagon?",
-            options: ["It has 6 lines of symmetry", "It has 4 lines of symmetry", "Its interior angles are 120°", "Its sides are not equal"],
-            answer: 0
-        },
-        {
-            question: "What is the surface area of a cylinder with a radius of 3 cm and a height of 8 cm? (Use π ≈ 3.14, formula: A = 2πr² + 2πrh)",
-            options: ["150.8 cm²", "180.5 cm²", "200.2 cm²", "250.6 cm²"],
-            answer: 0
-        },
-        {
-            question: "Which shape is formed by rotating a circle around an axis?",
-            options: ["Cone", "Sphere", "Cylinder", "Torus"],
-            answer: 2
-        },
-        {
-            question: "How many angles does a triangle have?",
-            options: ["2", "3", "4", "5"],
-            answer: 1
-        },
-        {
-            question: "A cylinder has a radius of 5 cm and a height of 10 cm. What is its volume? (Use π ≈ 3.14, formula: V = πr²h)",
-            options: ["785 cm³", "850 cm³", "900 cm³", "950 cm³"],
-            answer: 0
-        },
-        {
-            question: "What is the perimeter of a regular heptagon with a side length of 7 cm?",
-            options: ["49 cm", "50 cm", "51 cm", "52 cm"],
-            answer: 0
-        },
-        {
-            question: "What is the area of a sector of a circle with a radius of 6 cm and a central angle of 60°? (Use π ≈ 3.14, formula: Area = (θ/360)πr²)",
-            options: ["18.84 cm²", "19.42 cm²", "20.56 cm²", "21.27 cm²"],
-            answer: 0
-        },
-        {
-            question: "How many faces does a tetrahedron have?",
-            options: ["3", "4", "5", "6"],
-            answer: 1
-        },
-        {
-            question: "What is the measure of each exterior angle of a regular polygon with 12 sides?",
-            options: ["15°", "20°", "25°", "30°"],
-            answer: 0
-        },
-        {
-            question: "How many diagonals does a quadrilateral have?",
-            options: ["2", "3", "4", "5"],
-            answer: 0
-        },
-        {
-            question: "What is the area of a rectangle with a length of 15 cm and a width of 8 cm?",
-            options: ["120 cm²", "130 cm²", "140 cm²", "150 cm²"],
-            answer: 0
-        },
-        {
-            question: "A triangle has a base of 10 cm and a height of 5 cm. What is its area?",
-            options: ["25 cm²", "30 cm²", "35 cm²", "40 cm²"],
-            answer: 0
-        }
+                    question: "In a right triangle, if one angle is 30°, the other acute angle is:",
+                    options: ["45°", "60°", "90°", "120°"],
+                    correct: 1
+                }
             ],
             calculus: [
                 {
-                    question: "What is the derivative of f(x) = x²?",
-                    options: ["f'(x) = 2x", "f'(x) = x", "f'(x) = 2", "f'(x) = x²"],
-                    correctAnswer: 0
+                    question: "What is the derivative of x²?",
+                    options: ["x", "2x", "x²", "2"],
+                    correct: 1
                 },
                 {
-                    question: "What is the integral of f(x) = 2x?",
-                    options: ["F(x) = x² + C", "F(x) = 2x² + C", "F(x) = x + C", "F(x) = 2 ln|x| + C"],
-                    correctAnswer: 0
+                    question: "The integral of 2x dx is:",
+                    options: ["x² + C", "2x + C", "x²/2 + C", "2x² + C"],
+                    correct: 0
                 },
                 {
-                    question: "What is the derivative of f(x) = sin(x)?",
-                    options: ["f'(x) = cos(x)", "f'(x) = -sin(x)", "f'(x) = -cos(x)", "f'(x) = tan(x)"],
-                    correctAnswer: 0
+                    question: "What is the limit of (x² - 4)/(x - 2) as x approaches 2?",
+                    options: ["0", "2", "4", "undefined"],
+                    correct: 2
                 },
                 {
-                    question: "What is the chain rule used for?",
-                    options: ["Finding derivatives of composite functions", "Finding integrals", "Finding limits", "Solving differential equations"],
-                    correctAnswer: 0
+                    question: "The derivative of sin(x) is:",
+                    options: ["cos(x)", "-cos(x)", "sin(x)", "-sin(x)"],
+                    correct: 0
                 },
                 {
-                    question: "What is the derivative of f(x) = e^x?",
-                    options: ["f'(x) = e^x", "f'(x) = xe^x", "f'(x) = e^(x-1)", "f'(x) = 1/x"],
-                    correctAnswer: 0
+                    question: "What is the second derivative of x³?",
+                    options: ["3x²", "6x", "x²", "3x"],
+                    correct: 1
+                }
+            ],
+            trigonometry: [
+                {
+                    question: "What is sin(90°)?",
+                    options: ["0", "1", "-1", "1/2"],
+                    correct: 1
                 },
                 {
-                    question: "What is the integral of f(x) = 1/x?",
-                    options: ["F(x) = ln|x| + C", "F(x) = x ln|x| + C", "F(x) = 1/ln|x| + C", "F(x) = e^x + C"],
-                    correctAnswer: 0
+                    question: "cos²(x) + sin²(x) equals:",
+                    options: ["0", "1", "2", "π"],
+                    correct: 1
                 },
                 {
-                    question: "If f'(x) = 6x, then f(x) could be:",
-                    options: ["f(x) = 3x² + C", "f(x) = 6 ln|x| + C", "f(x) = 6x + C", "f(x) = x^6/6 + C"],
-                    correctAnswer: 0
+                    question: "What is tan(45°)?",
+                    options: ["0", "1", "√3", "1/2"],
+                    correct: 1
                 },
                 {
-                    question: "What is the limit as x approaches 0 of sin(x)/x?",
-                    options: ["1", "0", "∞", "Does not exist"],
-                    correctAnswer: 0
+                    question: "The period of sin(x) is:",
+                    options: ["π", "2π", "π/2", "4π"],
+                    correct: 1
                 },
                 {
-                    question: "The second derivative represents:",
-                    options: ["Rate of change of the rate of change", "Position", "Velocity", "Area under curve"],
-                    correctAnswer: 0
+                    question: "What is cos(0°)?",
+                    options: ["0", "1", "-1", "1/2"],
+                    correct: 1
+                }
+            ],
+            statistics: [
+                {
+                    question: "The mean of 2, 4, 6, 8, 10 is:",
+                    options: ["5", "6", "7", "8"],
+                    correct: 1
                 },
                 {
-                    question: "What is the derivative of f(x) = ln(x)?",
-                    options: ["f'(x) = 1/x", "f'(x) = ln(x)", "f'(x) = x", "f'(x) = e^x"],
-                    correctAnswer: 0
+                    question: "The median of 1, 3, 5, 7, 9 is:",
+                    options: ["3", "5", "7", "9"],
+                    correct: 1
                 },
                 {
-                    question: "What does the Fundamental Theorem of Calculus connect?",
-                    options: ["Differentiation and integration", "Limits and continuity", "Series and sequences", "Functions and their inverses"],
-                    correctAnswer: 0
+                    question: "In a normal distribution, what percentage of data falls within 1 standard deviation?",
+                    options: ["68%", "95%", "99%", "50%"],
+                    correct: 0
                 },
                 {
-                    question: "What is the derivative of a constant function f(x) = C?",
-                    options: ["f'(x) = 0", "f'(x) = 1", "f'(x) = C", "f'(x) = -C"],
-                    correctAnswer: 0
+                    question: "The mode is:",
+                    options: ["The average", "The middle value", "The most frequent value", "The range"],
+                    correct: 2
                 },
-                        {
-            question: "What is the derivative of f(x) = 3x²?",
-            options: ["3x", "6x", "3x²", "2x"],
-            answer: 1
-        },
-        {
-            question: "What is the integral of f(x) = x?",
-            options: ["x²/2", "x²", "2x", "x³/3"],
-            answer: 0
-        },
-        {
-            question: "The limit of (x² - 1)/(x - 1) as x approaches 1 is:",
-            options: ["0", "1", "2", "3"],
-            answer: 2
-        },
-        {
-            question: "What is the derivative of f(x) = sin(x)?",
-            options: ["cos(x)", "sin(x)", "tan(x)", "-cos(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = x³?",
-            options: ["3x", "6x", "3x²", "x²"],
-            answer: 1
-        },
-        {
-            question: "Find the integral of f(x) = 5x³.",
-            options: ["5x⁴/4", "5x⁴/3", "5x²", "5x³/2"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = e^x?",
-            options: ["e^x", "x^e", "e", "1"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 1/x.",
-            options: ["ln(x)", "x²", "1/x²", "x"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = cos(x)?",
-            options: ["-sin(x)", "sin(x)", "cos(x)", "-cos(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = cos(x)?",
-            options: ["sin(x)", "-sin(x)", "cos(x)", "-cos(x)"],
-            answer: 0
-        },
-        {
-            question: "The derivative of f(x) = ln(x) is:",
-            options: ["1/x", "x", "ln(x)", "e^x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 2x?",
-            options: ["x²", "x² + C", "x²/2", "2x²"],
-            answer: 1
-        },
-        {
-            question: "What is the derivative of f(x) = x⁴?",
-            options: ["4x³", "3x²", "4x²", "x³"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 6x².",
-            options: ["2x³", "2x³ + C", "3x³", "x³"],
-            answer: 1
-        },
-        {
-            question: "What is the derivative of f(x) = tan(x)?",
-            options: ["sec²(x)", "cos(x)", "sin(x)", "sec(x)"],
-            answer: 0
-        },
-        {
-            question: "The integral of f(x) = sec²(x) is:",
-            options: ["tan(x)", "sec(x)", "x", "sin(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 7x³?",
-            options: ["21x²", "7x²", "3x²", "21x"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 5x² + 3x?",
-            options: ["10x + 3", "10x", "5x + 3", "5x²"],
-            answer: 1
-        },
-        {
-            question: "What is the integral of f(x) = 3x²?",
-            options: ["x³", "x³ + C", "x²", "x² + C"],
-            answer: 1
-        },
-        {
-            question: "The limit of (x³ - 8)/(x - 2) as x approaches 2 is:",
-            options: ["4", "6", "8", "10"],
-            answer: 4
-        },
-                        {
-            question: "What is the derivative of f(x) = 5x³ + 3x²?",
-            options: ["15x² + 6x", "15x² + 3x", "15x³ + 6x", "15x² + 3x²"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 4x?",
-            options: ["2x²", "4x²", "4x² + C", "2x + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x² + 5x + 6?",
-            options: ["2x + 5", "x² + 5", "2x + 6", "x + 5"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 2x³.",
-            options: ["x⁴ + C", "2x⁴ + C", "x⁴", "2x⁴"],
-            answer: 1
-        },
-        {
-            question: "What is the derivative of f(x) = 3x⁵?",
-            options: ["15x⁴", "5x⁴", "3x⁴", "15x³"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 3x² + 4x?",
-            options: ["x³ + 2x² + C", "x³ + 2x²", "x² + 2x + C", "x² + 2x"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 3x² + 2x?",
-            options: ["6x + 2", "6x", "3x", "3"],
-            answer: 1
-        },
-        {
-            question: "Find the integral of f(x) = 6x.",
-            options: ["3x² + C", "2x² + C", "6x² + C", "3x²"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = e^2x?",
-            options: ["2e^2x", "e^2x", "2e^x", "e^x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = cos(x)?",
-            options: ["sin(x) + C", "-sin(x) + C", "cos(x) + C", "-cos(x) + C"],
-            answer: 1
-        },
-        {
-            question: "What is the derivative of f(x) = ln(x²)?",
-            options: ["2/x", "2x", "2/x²", "1/x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 5?",
-            options: ["5x + C", "5x", "x + C", "5x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x⁶?",
-            options: ["6x⁵", "5x⁶", "6x", "x⁵"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 1/x.",
-            options: ["ln(x)", "ln|x| + C", "x", "1/x + C"],
-            answer: 1
-        },
-        {
-            question: "What is the second derivative of f(x) = x³ - 3x + 5?",
-            options: ["6x", "6x - 3", "3x² - 3", "3x²"],
-            answer: 3
-        },
-        {
-            question: "What is the integral of f(x) = 2x²?",
-            options: ["2x³ + C", "x³ + C", "x³", "2x³"],
-            answer: 0
-        },
-        {
-            question: "Find the derivative of f(x) = 4x⁴ + x² - 3x.",
-            options: ["16x³ + 2x - 3", "16x³ + 2x", "12x³ + 2x - 3", "4x³ + 2x - 3"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = sin(2x)?",
-            options: ["2cos(2x)", "cos(2x)", "2sin(2x)", "-2sin(2x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = e^x?",
-            options: ["e^x + C", "e^x", "x + C", "e^x - C"],
-            answer: 0
-        },
-                        {
-            question: "What is the derivative of f(x) = 7x² + 3x?",
-            options: ["14x + 3", "14x", "3x + 7", "7x + 3"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 6x?",
-            options: ["3x² + C", "6x² + C", "3x + C", "2x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = cos(3x)?",
-            options: ["-3sin(3x)", "sin(3x)", "-sin(3x)", "3sin(3x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 3x²?",
-            options: ["x³ + C", "x² + C", "x³", "x²"],
-            answer: 0
-        },
-        {
-            question: "Find the second derivative of f(x) = 2x³ - 4x² + 5x.",
-            options: ["12x - 8", "12x - 4", "6x - 4", "6x - 8"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 2x⁵?",
-            options: ["10x⁴", "10x⁵", "5x⁴", "5x³"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 4x?",
-            options: ["2x² + C", "4x² + C", "2x + C", "4x²"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x⁴ + 2x³?",
-            options: ["4x³ + 6x²", "3x³ + 6x²", "4x³ + 3x²", "3x³ + 2x²"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = x + 5.",
-            options: ["x²/2 + 5x + C", "x² + 5x + C", "x + 5x + C", "x² + 5x + C"],
-            answer: 1
-        },
-        {
-            question: "What is the derivative of f(x) = tan(x)?",
-            options: ["sec²(x)", "sec(x)", "tan²(x)", "sin(x)"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = e^x.",
-            options: ["e^x + C", "e^x", "ln(x) + C", "x + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = x² - 3x + 2?",
-            options: ["2", "0", "2x - 3", "2x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 5x?",
-            options: ["5x² + C", "x² + C", "5x²", "5x + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x² + 3x + 4?",
-            options: ["2x + 3", "x + 3", "2x + 4", "x + 4"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 8x.",
-            options: ["4x² + C", "8x² + C", "4x + C", "2x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x³ + 2x?",
-            options: ["3x² + 2", "3x²", "3x + 2", "2x + 2"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 5x⁴ + 3x²?",
-            options: ["20x³ + 6x", "20x² + 6", "20x³ + 3x", "20x² + 6x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = sin(x)?",
-            options: ["-cos(x) + C", "cos(x) + C", "sin(x) + C", "-sin(x) + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = e^x + 5?",
-            options: ["e^x", "5", "e^x + 5", "e^x + 1"],
-            answer: 0
-        },
-                        {
-            question: "What is the derivative of f(x) = 3x³ + 2x²?",
-            options: ["9x² + 4x", "9x² + 2x", "6x² + 2x", "6x² + 4x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 7x?",
-            options: ["7x² + C", "x² + 7x + C", "7x²", "7x + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 4x² - 5x + 6?",
-            options: ["8x - 5", "4x - 5", "8x", "4x + 5"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = x⁴.",
-            options: ["x⁵/5 + C", "5x⁴ + C", "x³/3 + C", "x⁵ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 5x³ + 2x?",
-            options: ["30x² + 2", "30x²", "30x + 2", "5x² + 2"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x³ + 2x + 3?",
-            options: ["3x² + 2", "3x² + 1", "3x² + 3", "2x + 3"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 3x² + 4x?",
-            options: ["x³ + 2x² + C", "x² + 2x + C", "x³ + 4x + C", "x³ + 2x²"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = ln(x)?",
-            options: ["1/x", "x", "ln(x)", "x²"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = cos(x).",
-            options: ["sin(x) + C", "-sin(x) + C", "cos(x) + C", "-cos(x) + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 2x⁴ - 4x²?",
-            options: ["24x² - 8", "8x² - 4", "8x - 4", "16x² - 4"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = sin(x)?",
-            options: ["cos(x)", "-cos(x)", "sin(x)", "-sin(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 4x³?",
-            options: ["x⁴ + C", "x⁵ + C", "x³ + C", "x⁴/4 + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 2x⁶?",
-            options: ["12x⁵", "6x⁵", "12x⁴", "6x⁶"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 3x + 2.",
-            options: ["(3x²)/2 + 2x + C", "3x² + 2x + C", "x² + 2x + C", "3x² + x + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = x⁵ + 4x³?",
-            options: ["20x³ + 12x", "20x⁴ + 12x²", "20x³ + 12x²", "15x³ + 4x²"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = e^x + 3?",
-            options: ["e^x + 3x + C", "e^x + 3 + C", "e^x + 3x", "e^x + C"],
-            answer: 3
-        },
-        {
-            question: "What is the derivative of f(x) = tan(x)?",
-            options: ["sec²(x)", "cos(x)", "sin(x)", "sec(x)"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 2x³ + x².",
-            options: ["(1/2)x⁴ + (1/3)x³ + C", "(1/3)x⁴ + (1/2)x³ + C", "(1/4)x⁴ + x³ + C", "(1/2)x³ + x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 3x² - 7x + 1?",
-            options: ["6x - 7", "3x - 7", "3x + 7", "6x - 1"],
-            answer: 0
-        },
-                        {
-            question: "What is the derivative of f(x) = 5x⁴ + 3x²?",
-            options: ["20x³ + 6x", "20x³ + 6x²", "5x³ + 3x", "4x³ + 2x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 2x?",
-            options: ["x² + C", "2x² + C", "x²/2 + C", "2x + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 7x³ - 4x?",
-            options: ["21x² - 4", "21x² - 4x", "7x² - 4", "7x² - 4x"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 6x².",
-            options: ["2x³ + C", "3x³ + C", "2x² + C", "3x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x⁶ - 5x²?",
-            options: ["6x⁵ - 10x", "6x⁵ - 5x", "6x⁴ - 10x", "5x⁵ - 10x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 2x³ + 3x²?",
-            options: ["(1/2)x⁴ + x³ + C", "(1/4)x⁴ + (1/3)x³ + C", "(2/3)x⁴ + x³ + C", "(1/3)x⁴ + (1/2)x³ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 4x³ + 3x?",
-            options: ["24x + 3", "12x² + 3", "24x² + 3", "12x + 3"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = e^(2x)?",
-            options: ["2e^(2x)", "e^(2x)", "2xe^(2x)", "e^(x)"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 5x² + 3x.",
-            options: ["(5/3)x³ + (3/2)x² + C", "(5/3)x³ + (3/2)x²", "(5/3)x³ + 3x² + C", "(5/3)x² + (3/2)x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = sin(2x)?",
-            options: ["2cos(2x)", "cos(2x)", "2sin(2x)", "-2cos(2x)"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 3x⁴.",
-            options: ["(3/5)x⁵ + C", "(1/5)x⁵ + C", "(3/4)x⁵ + C", "(3/4)x⁴ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 4sin(x)?",
-            options: ["4cos(x)", "-4sin(x)", "4sin(x)", "cos(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 2x⁶?",
-            options: ["(2/7)x⁷ + C", "(7/6)x⁷ + C", "(1/7)x⁷ + C", "(2/7)x⁶ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 3x² + 2x + 1?",
-            options: ["6x + 2", "6x", "3x + 2", "6x + 1"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = cos(x) + 2?",
-            options: ["-sin(x)", "sin(x)", "-cos(x)", "cos(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 2e^(x)?",
-            options: ["2e^(x) + C", "2e^(x) + Cx", "e^(x) + C", "2e^(2x) + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 5x⁶?",
-            options: ["30x⁵", "6x⁵", "30x⁶", "6x⁶"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 7x?",
-            options: ["7x² + C", "7x²/2 + C", "7x + C", "x² + C"],
-            answer: 1
-        },
-        {
-            question: "Find the derivative of f(x) = x⁵ + 2x³.",
-            options: ["5x⁴ + 6x²", "5x⁴ + 3x²", "4x³ + 3x²", "5x³ + 6x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 6x?",
-            options: ["3x² + C", "6x² + C", "x² + 6x + C", "3x²"],
-            answer: 0
-        },
-                        {
-            question: "What is the derivative of f(x) = 2x⁴ - 3x²?",
-            options: ["8x³ - 6x", "4x³ - 3x", "8x³ - 3x", "6x³ - 3x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = x⁵?",
-            options: ["x⁶/6 + C", "x⁶ + C", "5x⁶ + C", "x⁵ + C"],
-            answer: 0
-        },
-        {
-            question: "Find the second derivative of f(x) = 4x³ + 6x.",
-            options: ["24x + 6", "24x + 6x", "24x² + 6", "12x² + 6"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 3x² - 2x + 4?",
-            options: ["6x - 2", "6x - 4", "6x + 4", "6x + 2"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 4x?",
-            options: ["2x² + C", "4x² + C", "x² + C", "x³ + C"],
-            answer: 0
-        },
-        {
-            question: "Find the derivative of f(x) = e^(3x).",
-            options: ["3e^(3x)", "e^(3x)", "3x²e^(3x)", "e^(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = x⁴ + 2x²?",
-            options: ["12x² + 4", "12x²", "8x + 4", "12x² + 2"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 5x²?",
-            options: ["(5/3)x³ + C", "(5/3)x³", "(1/3)x³ + C", "(5/2)x³ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = ln(2x)?",
-            options: ["1/x", "1/2x", "2/x", "1/x²"],
-            answer: 1
-        },
-        {
-            question: "Find the integral of f(x) = 7x⁴.",
-            options: ["(7/5)x⁵ + C", "(7/4)x⁵ + C", "(7/6)x⁵ + C", "(7/3)x⁵ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = tan(3x)?",
-            options: ["3sec²(3x)", "sec²(3x)", "3sec²(x)", "3sec²(2x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 3x?",
-            options: ["(3/2)x² + C", "(3/4)x² + C", "(3/3)x² + C", "(3/5)x² + C"],
-            answer: 0
-        },
-        {
-            question: "Find the second derivative of f(x) = 2x⁶ + 4x.",
-            options: ["72x⁴ + 4", "72x⁴", "24x² + 4", "12x⁵ + 4"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = cos(2x)?",
-            options: ["-2sin(2x)", "2cos(2x)", "-2cos(2x)", "sin(2x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 6x⁵?",
-            options: ["(6/6)x⁶ + C", "(1/6)x⁶ + C", "(6/7)x⁶ + C", "(6/5)x⁶ + C"],
-            answer: 3
-        },
-        {
-            question: "What is the derivative of f(x) = 2x³ + x?",
-            options: ["6x² + 1", "6x² + 1", "6x² + x", "3x² + 1"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 3x².",
-            options: ["x³ + C", "x³/3 + C", "3x³ + C", "x² + C"],
-            answer: 1
-        },
-        {
-            question: "What is the second derivative of f(x) = 3x² - 2x + 1?",
-            options: ["6x - 2", "6x", "2x - 2", "6x + 2"],
-            answer: 1
-        },
-        {
-            question: "What is the derivative of f(x) = x⁶?",
-            options: ["6x⁵", "6x⁴", "6x", "5x⁶"],
-            answer: 0
-        },
-                        {
-            question: "What is the integral of f(x) = 4x³?",
-            options: ["x⁴ + C", "x⁴/4 + C", "x⁴/3 + C", "x⁵/5 + C"],
-            answer: 2
-        },
-        {
-            question: "What is the derivative of f(x) = 6x² + 5x?",
-            options: ["12x + 5", "6x + 5", "12x + 6", "6x² + 5"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = e^(x)?",
-            options: ["e^(x) + C", "e^(x²) + C", "xe^(x) + C", "x + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x⁴ + x³ + x²?",
-            options: ["4x³ + 3x² + 2x", "4x³ + 3x²", "3x² + 2x + 1", "4x² + 3x"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = x³ - 6x² + 9x?",
-            options: ["6x - 6", "6x - 9", "6x + 9", "6x + 6"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 8x?",
-            options: ["4x² + C", "8x² + C", "4x²", "8x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = sin(4x)?",
-            options: ["4cos(4x)", "cos(4x)", "4sin(4x)", "sin(4x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 7x²?",
-            options: ["(7/3)x³ + C", "(7/2)x³ + C", "(7/4)x³ + C", "(7/5)x³ + C"],
-            answer: 1
-        },
-        {
-            question: "Find the second derivative of f(x) = 2x⁵ - 3x³ + 4x.",
-            options: ["40x³ - 18x", "40x³ - 9x", "40x³ - 6x", "20x³ - 3x"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = ln(3x)?",
-            options: ["1/x", "1/3x", "1/x³", "3/x"],
-            answer: 1
-        },
-        {
-            question: "What is the integral of f(x) = 2x?",
-            options: ["x² + C", "2x² + C", "x²/2 + C", "2x + C"],
-            answer: 0
-        },
-        {
-            question: "Find the derivative of f(x) = 7x⁴ + 3x².",
-            options: ["28x³ + 6x", "28x³ + 3x", "14x³ + 3x", "7x³ + 6x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 9x²?",
-            options: ["3x³ + C", "3x³/2 + C", "9x³ + C", "9x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = cos(5x)?",
-            options: ["-5sin(5x)", "5cos(5x)", "-5cos(5x)", "5sin(5x)"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 2x⁶ + x³ - 4x?",
-            options: ["72x⁴ + 6x", "72x⁴ + 6x³", "12x⁵ + 6x", "12x⁵ + 6x²"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = e^(5x)?",
-            options: ["5e^(5x)", "e^(5x)", "5e^(x)", "5x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 5x³?",
-            options: ["(5/4)x⁴ + C", "(5/3)x⁴ + C", "(5/2)x⁴ + C", "(5/5)x⁴ + C"],
-            answer: 1
-        },
-        {
-            question: "Find the second derivative of f(x) = 8x⁴ + 3x² - 2x.",
-            options: ["96x² + 6", "32x³ + 6x", "96x² - 2", "32x³ - 2x"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = tan(x)?",
-            options: ["sec²(x)", "cos(x)", "sec(x)", "sin(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 10x?",
-            options: ["5x² + C", "10x² + C", "x² + C", "5x²"],
-            answer: 0
-        },
-                        {
-            question: "What is the derivative of f(x) = x⁵ - 4x³ + 2x?",
-            options: ["5x⁴ - 12x² + 2", "5x⁴ - 12x + 2", "4x⁴ - 12x² + 2", "5x⁴ - 12x² + 1"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 2x?",
-            options: ["x² + C", "2x² + C", "x²/2 + C", "x + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 7x² + 3x + 4?",
-            options: ["14x + 3", "7x + 3", "14x + 4", "14x"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 3x⁴.",
-            options: ["(3/5)x⁵ + C", "(3/4)x⁵ + C", "(3/6)x⁵ + C", "(3/2)x⁵ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 2x⁶ + x³ - 4x?",
-            options: ["72x⁴ + 6", "12x⁵ + 6x", "72x⁴ + 6x", "12x⁵ + 6"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 5x²?",
-            options: ["(5/3)x³ + C", "(5/2)x³ + C", "(5/4)x³ + C", "(5/5)x³ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 6x⁴ + 3x²?",
-            options: ["24x³ + 6x", "24x³ + 6x²", "24x³ + 6", "6x³ + 6x²"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 7x⁶?",
-            options: ["(7/7)x⁷ + C", "(7/6)x⁷ + C", "(7/5)x⁷ + C", "(7/4)x⁷ + C"],
-            answer: 1
-        },
-        {
-            question: "What is the second derivative of f(x) = x³ - 6x² + 9x?",
-            options: ["6x - 6", "6x - 9", "6x + 9", "6x + 6"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = e^(2x)?",
-            options: ["2e^(2x)", "e^(2x)", "2x", "e^(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 4x³?",
-            options: ["x⁴ + C", "(4/4)x⁴ + C", "(4/5)x⁴ + C", "(4/6)x⁴ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 5x⁴ - 3x² + 2x?",
-            options: ["20x³ - 6x + 2", "20x³ - 6x", "20x³ - 2x", "20x³ - 6x + 2"],
-            answer: 1
-        },
-        {
-            question: "What is the derivative of f(x) = sin(3x)?",
-            options: ["3cos(3x)", "cos(3x)", "3sin(3x)", "sin(3x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 6x²?",
-            options: ["(6/3)x³ + C", "(6/2)x³ + C", "(6/4)x³ + C", "(6/5)x³ + C"],
-            answer: 1
-        },
-        {
-            question: "What is the second derivative of f(x) = 3x² + 5x?",
-            options: ["6x + 5", "6x", "2x + 5", "6x + 2"],
-            answer: 1
-        },
-        {
-            question: "What is the derivative of f(x) = x³ + 5x²?",
-            options: ["3x² + 10x", "3x² + 5x", "5x² + 2x", "3x + 10x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 9x?",
-            options: ["(9/2)x² + C", "(9/3)x² + C", "(9/4)x² + C", "(9/5)x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = ln(5x)?",
-            options: ["1/5x", "5/x", "1/x", "5/x²"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 4x?",
-            options: ["2x² + C", "4x² + C", "x² + C", "2x + C"],
-            answer: 0
-        },
-        {
-            question: "Find the second derivative of f(x) = 6x⁵ + 2x³ - 3x.",
-            options: ["30x⁴ + 12x² - 3", "30x⁴ + 6x²", "30x⁴ + 12x", "30x⁴ + 6x² - 3"],
-            answer: 0
-        },
-                        {
-            question: "What is the derivative of f(x) = 8x³ + 2x?",
-            options: ["24x² + 2", "24x² + 2x", "24x²", "8x² + 2"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 5x²?",
-            options: ["(5/3)x³ + C", "(5/2)x³ + C", "(5/4)x³ + C", "(5)x³ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = cos(3x)?",
-            options: ["-3sin(3x)", "3sin(3x)", "-3cos(3x)", "3cos(3x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 10x?",
-            options: ["5x² + C", "10x² + C", "x² + C", "5x²"],
-            answer: 0
-        },
-        {
-            question: "Find the second derivative of f(x) = 4x⁵ - 2x³ + 7x²?",
-            options: ["80x⁴ - 12x² + 14x", "80x⁴ - 12x² + 14", "20x⁴ - 6x² + 14x", "80x⁴ - 6x² + 14"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 10x² + 5x + 3?",
-            options: ["20x + 5", "10x + 5", "20x + 3", "20x + 2"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 3x?",
-            options: ["(3/2)x² + C", "(3/3)x² + C", "(3/4)x² + C", "(3/5)x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x⁶ - 7x⁴ + 3x²?",
-            options: ["6x⁵ - 28x³ + 6x", "6x⁵ - 28x³ + 3x", "6x⁴ - 28x³ + 6x", "6x⁶ - 28x³ + 3x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 12x?",
-            options: ["6x² + C", "12x² + C", "x² + C", "6x²"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 9x³ - 3x² + 5x?",
-            options: ["54x - 6", "54x - 6x", "54x - 3", "18x - 6"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x² - 5x + 6?",
-            options: ["2x - 5", "2x + 5", "2x - 6", "2x + 6"],
-            answer: 0
-        },
-        {
-            question: "Find the integral of f(x) = 7x³?",
-            options: ["(7/4)x⁴ + C", "(7/3)x⁴ + C", "(7/5)x⁴ + C", "(7/2)x⁴ + C"],
-            answer: 1
-        },
-        {
-            question: "What is the second derivative of f(x) = 6x⁴ + 3x² - 4x?",
-            options: ["72x² + 6", "24x³ + 6x", "24x³ + 6", "72x² + 6x"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = ln(x² + 1)?",
-            options: ["2x/(x² + 1)", "x²/(x² + 1)", "2/(x² + 1)", "2x/(x + 1)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 2x?",
-            options: ["x² + C", "2x² + C", "x²/2 + C", "2x + C"],
-            answer: 0
-        },
-        {
-            question: "Find the second derivative of f(x) = x⁶ - 4x⁴ + 5x²?",
-            options: ["120x⁴ - 16x² + 10", "120x⁴ - 16x² + 5", "120x⁴ - 16x²", "120x⁴ - 8x² + 10"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 3x⁵ - 2x³ + x?",
-            options: ["15x⁴ - 6x² + 1", "15x⁴ - 6x² + 3", "15x⁴ - 6x² + 0", "15x⁴ - 6x²"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 6x?",
-            options: ["3x² + C", "6x² + C", "x² + C", "3x²"],
-            answer: 0
-        },
-                        {
-            question: "What is the derivative of f(x) = 4x³ + 2x² - 7x?",
-            options: ["12x² + 4x - 7", "12x² + 4x - 7x", "12x² + 4x", "12x² - 7"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 2x² + 5x?",
-            options: ["(2/3)x³ + (5/2)x² + C", "(2/3)x³ + (5/2)x + C", "(2/3)x³ + 5x² + C", "(2/5)x³ + (5/2)x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = tan(x)?",
-            options: ["sec²(x)", "cos(x)", "sin(x)", "sec(x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 8x³?",
-            options: ["(8/4)x⁴ + C", "(8/3)x⁴ + C", "(8/5)x⁴ + C", "(8/2)x⁴ + C"],
-            answer: 0
-        },
-        {
-            question: "Find the second derivative of f(x) = 6x⁴ + 3x² - 5x?",
-            options: ["72x³ + 6x - 5", "24x³ + 6x - 5", "72x³ + 6x", "72x³ + 6x + 5"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x⁴ - 3x² + 2x?",
-            options: ["4x³ - 6x + 2", "4x³ - 6x + 2x", "4x³ - 3x² + 2", "4x³ - 3x"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 5x?",
-            options: ["(5/2)x² + C", "(5)x² + C", "(5/3)x² + C", "(5/4)x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 2x⁶ - 7x⁴ + 5x²?",
-            options: ["60x⁵ - 28x³ + 10x", "60x⁵ - 28x³ + 10", "60x⁵ - 14x³ + 10x", "60x⁵ - 14x³ + 10"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = cos(4x)?",
-            options: ["-4sin(4x)", "4sin(4x)", "-4cos(4x)", "4cos(4x)"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 9x²?",
-            options: ["(9/3)x³ + C", "(9/2)x³ + C", "(9/4)x³ + C", "(9/5)x³ + C"],
-            answer: 0
-        },
-        {
-            question: "Find the second derivative of f(x) = 3x² - 2x + 1?",
-            options: ["6x - 2", "6x - 1", "6x + 1", "6x + 2"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = 4x² + 5x?",
-            options: ["8x + 5", "8x + 5x", "8x + 3", "8x + 1"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 7x⁴?",
-            options: ["(7/5)x⁵ + C", "(7/4)x⁵ + C", "(7/6)x⁵ + C", "(7/3)x⁵ + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = 5x³ - 4x² + 6x?",
-            options: ["30x² - 8x + 6", "30x² - 8x", "30x² + 6", "30x² - 4x + 6"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x² + 4x?",
-            options: ["2x + 4", "2x + 5", "2x + 2", "4x + 2"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 3x² + 2x?",
-            options: ["(3/3)x³ + (2/2)x² + C", "(3/4)x³ + (2/3)x² + C", "(3/2)x³ + (2/2)x² + C", "(3/5)x³ + (2/4)x² + C"],
-            answer: 0
-        },
-        {
-            question: "Find the second derivative of f(x) = x⁴ - 3x² + x?",
-            options: ["12x² - 6", "12x² - 6x", "12x² - 3x", "12x²"],
-            answer: 0
-        },
-        {
-            question: "What is the derivative of f(x) = x⁵ + 4x² - 7x?",
-            options: ["5x⁴ + 8x - 7", "5x⁴ + 8x - 7x", "5x⁴ + 4x² - 7", "5x⁴ + 8x + 7"],
-            answer: 0
-        },
-        {
-            question: "What is the integral of f(x) = 11x?",
-            options: ["(11/2)x² + C", "(11/3)x² + C", "(11/4)x² + C", "(11/5)x² + C"],
-            answer: 0
-        },
-        {
-            question: "What is the second derivative of f(x) = x⁶ - 6x⁴ + 2x²?",
-            options: ["30x⁵ - 24x³ + 4x", "30x⁵ - 24x³ + 4", "30x⁵ - 24x³", "30x⁵ - 24x³ + 4x²"],
-            answer: 0
-        }
+                {
+                    question: "If you flip a fair coin twice, what's the probability of getting two heads?",
+                    options: ["1/2", "1/3", "1/4", "1/8"],
+                    correct: 2
+                }
+            ],
+            arithmetic: [
+                {
+                    question: "What is 25 × 4?",
+                    options: ["90", "100", "110", "120"],
+                    correct: 1
+                },
+                {
+                    question: "What is 144 ÷ 12?",
+                    options: ["11", "12", "13", "14"],
+                    correct: 1
+                },
+                {
+                    question: "What is 15% of 200?",
+                    options: ["25", "30", "35", "40"],
+                    correct: 1
+                },
+                {
+                    question: "What is 7³?",
+                    options: ["21", "49", "343", "2401"],
+                    correct: 2
+                },
+                {
+                    question: "What is √64?",
+                    options: ["6", "7", "8", "9"],
+                    correct: 2
+                }
             ]
         };
 
+        let currentQuiz = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let selectedTopic = '';
 
-        // Initialize the quiz
-        function init() {
-            // Event listeners
-            startBtn.addEventListener('click', startQuiz);
-            restartBtn.addEventListener('click', restartQuiz);
-            topicSelectEl.addEventListener('change', handleTopicChange);
-            
-            // Disable blurred options
-            const blurredOptions = document.querySelectorAll('.blurred-option');
-            blurredOptions.forEach(option => {
-                option.disabled = true;
-                option.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    upgradeMessageEl.textContent = 'Upgrade to Pro to unlock';
-                    upgradeMessageEl.style.display = 'block';
-                    topicSelectEl.value = '';
-                });
-            });
-            
-            // Add event listeners for share functionality
-            if (telegramShareBtn && revealScoreBtn) {
-                telegramShareBtn.addEventListener('click', handleShare);
-                revealScoreBtn.addEventListener('click', revealFullScore);
-            }
-            
-            // Add popup event listeners
-            document.querySelector('.close-button').addEventListener('click', closePopup);
-            
-            // Show pop-up every 55 seconds
-            setInterval(showPopup, 55000);
+        function extractVideoId(url) {
+            const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
         }
 
-        // Handle topic change
-        function handleTopicChange() {
-            const selectedTopic = topicSelectEl.value;
-            const selectedOption = topicSelectEl.options[topicSelectEl.selectedIndex];
+        function loadVideo() {
+            const videoUrl = document.getElementById('videoUrl').value.trim();
+            const messageArea = document.getElementById('messageArea');
             
-            // Reset upgrade message
-            upgradeMessageEl.style.display = 'none';
-            
-            // Check if selected option is blurred
-            if (selectedOption && selectedOption.classList.contains('blurred-option')) {
-                upgradeMessageEl.textContent = 'Upgrade to Pro to unlock';
-                upgradeMessageEl.style.display = 'block';
-                topicSelectEl.value = ''; // Reset selection
+            if (!videoUrl) {
+                messageArea.innerHTML = '<div class="error-message">Please enter a YouTube video URL.</div>';
+                return;
             }
+
+            const videoId = extractVideoId(videoUrl);
+            
+            if (!videoId) {
+                messageArea.innerHTML = '<div class="error-message">Invalid YouTube URL. Please enter a valid YouTube video URL.</div>';
+                return;
+            }
+
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
+            videoContainer.style.display = 'block';
+            
+            messageArea.innerHTML = '<div class="success-message">Video loaded successfully! Select a topic and start practicing.</div>';
         }
 
-        // Start the quiz
         function startQuiz() {
-            const selectedTopic = topicSelectEl.value;
+            const topicSelect = document.getElementById('topicSelect');
+            selectedTopic = topicSelect.value;
             
             if (!selectedTopic) {
                 alert('Please select a topic first!');
                 return;
             }
-            
-            // Load questions for selected topic
-            questions = getRandomQuestions(selectedTopic, 10);
-            
-            if (questions.length === 0) {
-                alert('No questions available for this topic!');
-                return;
-            }
-            
-            // Hide topic selection and show quiz
-            topicSelectionEl.style.display = 'none';
-            quizContainerEl.style.display = 'block';
+
+            // Show topic info
+            document.getElementById('selectedTopic').textContent = selectedTopic.charAt(0).toUpperCase() + selectedTopic.slice(1);
+            document.getElementById('topicInfo').style.display = 'block';
+
+            // Get random questions for the selected topic
+            const allQuestions = quizQuestions[selectedTopic];
+            currentQuiz = getRandomQuestions(allQuestions, Math.min(5, allQuestions.length));
             
             // Reset quiz state
             currentQuestionIndex = 0;
-            score = 0;
-            answeredQuestions = 0;
-            totalTimeUsed = 0;
-            startTime = new Date();
+            userAnswers = [];
             
-            // Load first question
-            loadQuestion();
+            // Show quiz container and hide start section
+            document.getElementById('quizStart').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            
+            // Generate questions
+            generateQuestions();
+            updateProgressBar();
         }
 
-        // Get random questions from the bank
-        function getRandomQuestions(topic, count) {
-            if (!questionsBank[topic] || questionsBank[topic].length === 0) {
-                return [];
-            }
-            
-            const topicQuestions = [...questionsBank[topic]];
-            const selectedQuestions = [];
-            
-            // Ensure we don't try to get more questions than are available
-            count = Math.min(count, topicQuestions.length);
-            
-            for (let i = 0; i < count; i++) {
-                const randomIndex = Math.floor(Math.random() * topicQuestions.length);
-                selectedQuestions.push(topicQuestions.splice(randomIndex, 1)[0]);
-            }
-            
-            return selectedQuestions;
+        function getRandomQuestions(questions, count) {
+            const shuffled = [...questions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
         }
 
-        // Load a question
-        function loadQuestion() {
-            if (currentQuestionIndex >= questions.length) {
-                endQuiz();
+        function generateQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            currentQuiz.forEach((question, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.innerHTML = `
+                    <div class="question-text">${index + 1}. ${question.question}</div>
+                    <div class="options">
+                        ${question.options.map((option, optionIndex) => `
+                            <label class="option">
+                                <input type="radio" name="question${index}" value="${optionIndex}">
+                                <span>${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(questionCard);
+            });
+
+            document.querySelector('.submit-btn').style.display = 'block';
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / currentQuiz.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function submitQuiz() {
+            // Collect answers
+            userAnswers = [];
+            for (let i = 0; i < currentQuiz.length; i++) {
+                const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+                userAnswers.push(selectedOption ? parseInt(selectedOption.value) : -1);
+            }
+
+            // Check if all questions are answered
+            if (userAnswers.includes(-1)) {
+                alert('Please answer all questions before submitting!');
                 return;
             }
-            
-            const question = questions[currentQuestionIndex];
-            
-            // Update question counter
-            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
-            
-            // Load question text
-            questionEl.textContent = question.question;
-            
-            // Clear options and feedback
-            optionsEl.innerHTML = '';
-            feedbackEl.innerHTML = '';
-            feedbackEl.className = 'feedback';
-            
-            // Add options
-            question.options.forEach((option, index) => {
-                const li = document.createElement('li');
-                li.textContent = option;
-                li.className = 'option';
-                li.setAttribute('data-index', index);
-                li.addEventListener('click', () => selectAnswer(index));
-                optionsEl.appendChild(li);
-            });
-            
-            // Reset and start timer
-            timeLeft = 60;
-            timerProgressEl.style.width = '100%';
-            clearInterval(timer);
-            startTimer();
-        }
 
-        // Start the timer
-        function startTimer() {
-            timer = setInterval(() => {
-                timeLeft--;
-                
-                // Update timer bar
-                const percentage = (timeLeft / 60) * 100;
-                timerProgressEl.style.width = `${percentage}%`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    handleTimeUp();
-                }
-            }, 1000);
-        }
-
-        // Handle time up
-        function handleTimeUp() {
-            // Mark question as timed out
-            feedbackEl.textContent = "Time's up! Moving to next question...";
-            feedbackEl.className = 'feedback incorrect-feedback';
-            
-            // Disable all options
-            const options = document.querySelectorAll('.option');
-            const question = questions[currentQuestionIndex];
-            const correctIndex = question.correctAnswer ?? question.answer;
-            
-            options.forEach(option => {
-                option.style.pointerEvents = 'none';
-                
-                // Highlight correct answer
-                if (parseInt(option.getAttribute('data-index')) === correctIndex) {
-                    option.classList.add('correct');
+            // Calculate score
+            let correctAnswers = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === currentQuiz[index].correct) {
+                    correctAnswers++;
                 }
             });
+
+            const percentage = Math.round((correctAnswers / currentQuiz.length) * 100);
             
-            // Record time used
-            totalTimeUsed += 60;
-            answeredQuestions++;
-            
-            // Store answer with correct answer for timed out questions
-            userAnswers.push({
-                question: question.question,
-                userAnswer: "Time's up",
-                correctAnswer: question.options[correctIndex],
-                isCorrect: false
-            });
-            
-            // Move to next question after 2 seconds
-            setTimeout(nextQuestion, 2000);
+            // Display score
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.innerHTML = `
+                <div class="score-display">
+                    🎉 Quiz Complete! 🎉<br>
+                    You scored ${correctAnswers}/${currentQuiz.length} (${percentage}%)<br>
+                    ${getScoreMessage(percentage)}
+                </div>
+            `;
+
+            // Hide submit button and show restart button
+            document.querySelector('.submit-btn').style.display = 'none';
+            document.querySelector('.restart-btn').style.display = 'block';
+
+            // Update progress bar to 100%
+            document.getElementById('progressFill').style.width = '100%';
         }
 
-        function selectAnswer(index) {
-            clearInterval(timer);
-            
-            const correctIndex = questions[currentQuestionIndex].correctAnswer ?? questions[currentQuestionIndex].answer;
-            const isCorrect = index === correctIndex;
-            
-            // Record time used
-            const timeUsed = 60 - timeLeft;
-            totalTimeUsed += timeUsed;
-            answeredQuestions++;
-            
-            // Store answer with correct answer
-            const question = questions[currentQuestionIndex];
-            userAnswers.push({
-                question: question.question,
-                userAnswer: question.options[index],
-                correctAnswer: question.options[correctIndex],
-                isCorrect: isCorrect
-            });
-            
-            // Update score if correct
-            if (isCorrect) {
-                score++;
-            }
-            
-            // Disable options without highlighting
-            const options = document.querySelectorAll('.option');
-            options.forEach(option => {
-                option.style.pointerEvents = 'none';
-            });
-            
-            // Move to next question after 1 second
-            setTimeout(nextQuestion, 1000);
+        function getScoreMessage(percentage) {
+            if (percentage >= 90) return "Outstanding! You're a math superstar! ⭐";
+            if (percentage >= 80) return "Great job! You have a solid understanding! 👏";
+            if (percentage >= 70) return "Good work! Keep practicing to improve! 📚";
+            if (percentage >= 60) return "Not bad! Review the topics and try again! 💪";
+            return "Keep studying! Practice makes perfect! 🎯";
         }
 
-        // Move to next question
-        function nextQuestion() {
-            currentQuestionIndex++;
-            loadQuestion();
-        }
-
-        // End the quiz
-        function endQuiz() {
-            endTime = new Date();
-            const totalTime = (endTime - startTime) / 1000; // in seconds
-            
-            // Hide quiz container and show results
-            quizContainerEl.style.display = 'none';
-            resultsEl.style.display = 'block';
-            
-            // Store actual score and show masked version
-            quizScore = score;
-            scoreEl.textContent = '**';
-            
-            // Reset share functionality
-            shareCount = 0;
-            shareProgressBar.style.width = '0%';
-            shareCountText.textContent = 'Shares: 0/5';
-            revealScoreBtn.disabled = true;
-            telegramShareBtn.disabled = false;
-            answersSummary.style.display = 'none';
-            restartBtn.style.display = 'none';
-            
-            // Update time stats
-            const avgTimePerQuestion = answeredQuestions > 0 ? (totalTimeUsed / answeredQuestions).toFixed(1) : 0;
-            timeStatsEl.textContent = `Total time: ${totalTime.toFixed(1)} seconds
-                                      Average time per question: ${avgTimePerQuestion} seconds`;
-        }
-
-        // Restart the quiz
         function restartQuiz() {
-            // Hide results and show topic selection
-            resultsEl.style.display = 'none';
-            topicSelectionEl.style.display = 'block';
+            // Reset everything
+            document.getElementById('quizStart').style.display = 'block';
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('topicInfo').style.display = 'none';
+            document.getElementById('scoreDisplay').innerHTML = '';
+            document.querySelector('.restart-btn').style.display = 'none';
+            document.getElementById('progressFill').style.width = '0%';
             
-            // Reset topic selection
-            topicSelectEl.value = '';
-            upgradeMessageEl.style.display = 'none';
+            // Clear topic selection
+            document.getElementById('topicSelect').value = '';
+            selectedTopic = '';
         }
 
-        // Function to handle share action
-        function handleShare() {
-            // Increment share count
-            shareCount++;
-
-            // Update progress bar and text
-            const progressPercentage = (shareCount / 5) * 100;
-            shareProgressBar.style.width = `${progressPercentage}%`;
-            shareCountText.textContent = `Shares: ${shareCount}/5`;
-
-            // Open Telegram share link
-            const telegramShareMessage = encodeURIComponent(
-                "➗✨ 99% of people can't get a perfect score on this Math quiz! " +
-                "Think you're in the top 1%? Test your knowledge now and challenge a friend to beat you! 🚀🔥\n\n" +
-                "CLICK THE LINK FOR THE QUIZ 👇 [https://t.me/mathrush_bot]"
-            );
-            window.open(`https://t.me/share/url?url=${telegramShareMessage}`, '_blank');
-
-            // Enable reveal score button if shares reach 5
-            if (shareCount >= 5) {
-                revealScoreBtn.disabled = false;
-                telegramShareBtn.disabled = true;
-            }
-        }
-
-        // Function to reveal full score
-        function revealFullScore() {
-            scoreEl.textContent = `${quizScore}/${questions.length}`;
-            
-            // Show answers summary
-            const correctList = document.getElementById('correct-list');
-            const wrongList = document.getElementById('wrong-list');
-            const correctCount = document.getElementById('correct-count');
-            const wrongCount = document.getElementById('wrong-count');
-            
-            // Clear previous lists
-            correctList.innerHTML = '';
-            wrongList.innerHTML = '';
-            
-            // Count correct and wrong answers
-            let correctCountNum = 0;
-            let wrongCountNum = 0;
-            
-            // Populate lists
-            userAnswers.forEach(answer => {
-                const li = document.createElement('li');
-                if (answer.isCorrect) {
-                    li.textContent = `Q: ${answer.question} | Your Answer: ${answer.userAnswer}`;
-                    correctList.appendChild(li);
-                    correctCountNum++;
-                } else {
-                    li.textContent = `Q: ${answer.question} | Your Answer: ${answer.userAnswer} | Correct Answer: ${answer.correctAnswer}`;
-                    wrongList.appendChild(li);
-                    wrongCountNum++;
-                }
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate elements on page load
+            const elements = document.querySelectorAll('.video-section, .quiz-section');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.2}s`;
             });
-            
-            // Update counts
-            correctCount.textContent = correctCountNum;
-            wrongCount.textContent = wrongCountNum;
-            
-            // Show summary and restart button
-            answersSummary.style.display = 'block';
-            restartBtn.style.display = 'inline-block';
-            
-            alert(`Congratulations! Your full score is ${quizScore}/${questions.length}. Great job completing the mathematics quiz!`);
-            revealScoreBtn.disabled = true;
-        }
-
-        // Add popup functionality
-        function showPopup() {
-            let popup = document.getElementById("popupAd");
-            let countdown = document.getElementById("countdown");
-            let timeLeft = 35;
-            popup.style.display = "flex";
-            
-            let timer = setInterval(() => {
-                timeLeft--;
-                countdown.innerText = `Closing in ${timeLeft}s`;
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    popup.style.display = "none";
-                }
-            }, 1000);
-        }
-
-        function closePopup(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            document.getElementById("popupAd").style.display = "none";
-        }
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', init);
+        });
     </script>
 </body>
 </html>
